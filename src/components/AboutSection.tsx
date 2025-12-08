@@ -1,5 +1,6 @@
 import { Code, Palette, Terminal, Zap } from "lucide-react";
 import ScrollAnimationWrapper from "./ScrollAnimationWrapper";
+import profileImage from "@/assets/profile.jpg";
 
 const AboutSection = () => {
   const skills = [
@@ -17,9 +18,11 @@ const AboutSection = () => {
           <ScrollAnimationWrapper animation="fade-left" className="flex-1">
             <div className="relative">
               <div className="w-full max-w-md aspect-square bg-primary rounded-2xl overflow-hidden mx-auto">
-                <div className="w-full h-full bg-gradient-to-br from-primary to-red-800 flex items-center justify-center">
-                  <span className="text-[12rem] font-display text-primary-foreground/20">S</span>
-                </div>
+                <img 
+                  src={profileImage} 
+                  alt="SHNWAZX Profile" 
+                  className="w-full h-full object-cover object-center"
+                />
               </div>
             </div>
           </ScrollAnimationWrapper>
