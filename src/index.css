@@ -86,6 +86,46 @@
   .animate-pulse-glow {
     animation: pulse-glow 2s ease-in-out infinite;
   }
+
+  /* Scroll animations */
+  .scroll-hidden {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .scroll-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .scroll-hidden-left {
+    opacity: 0;
+    transform: translateX(-60px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .scroll-hidden-right {
+    opacity: 0;
+    transform: translateX(60px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .scroll-visible-x {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .scroll-hidden-scale {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .scroll-visible-scale {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes float {
