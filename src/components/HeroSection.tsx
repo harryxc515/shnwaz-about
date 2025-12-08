@@ -1,4 +1,5 @@
 import { ArrowDown, Instagram, Github, Youtube, Send } from "lucide-react";
+import profileImage from "@/assets/profile.jpg";
 
 const HeroSection = () => {
   const socialLinks = [
@@ -65,13 +66,15 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Right content - Avatar placeholder */}
+          {/* Right content - Profile Image */}
           <div className="flex-1 flex justify-center lg:justify-end animate-slide-in-right" style={{ animationDelay: '0.4s' }}>
             <div className="relative">
               <div className="w-72 h-72 md:w-96 md:h-96 bg-gradient-to-br from-primary to-red-700 rounded-2xl overflow-hidden glow-primary animate-pulse-glow">
-                <div className="w-full h-full bg-card/50 flex items-center justify-center">
-                  <span className="text-8xl md:text-9xl font-display text-primary/30">S</span>
-                </div>
+                <img 
+                  src={profileImage} 
+                  alt="SHNWAZX Profile" 
+                  className="w-full h-full object-cover object-center"
+                />
               </div>
               {/* Decorative elements */}
               <div className="absolute -bottom-4 -right-4 w-full h-full border-2 border-primary rounded-2xl -z-10" />
