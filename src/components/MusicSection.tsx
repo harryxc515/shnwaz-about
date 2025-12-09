@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX } from "lucide-react";
+import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, ChevronDown, ChevronUp } from "lucide-react";
 
 const songs = [
   { id: "SmZpCs4QlY0", title: "Featured Track", artist: "SHNWAZX" },
@@ -9,6 +9,9 @@ const songs = [
   { id: "oQFNHR9U_hU", title: "Track 4", artist: "SHNWAZX" },
   { id: "l5sgIqzlPXc", title: "Track 5", artist: "SHNWAZX" },
 ];
+
+// YouTube thumbnail URL helper
+const getThumbnail = (videoId: string) => `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
 
 interface YouTubePlayer {
   playVideo: () => void;
@@ -31,6 +34,7 @@ const MusicSection = () => {
   const [duration, setDuration] = useState("0:00");
   const [isReady, setIsReady] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [showPlaylist, setShowPlaylist] = useState(false);
   const playerRef = useRef<YouTubePlayer | null>(null);
   const playerContainerRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -41,7 +45,6 @@ const MusicSection = () => {
     if (playerRef.current) {
       const total = playerRef.current.getDuration();
       setDuration(formatTime(total));
-      // Autoplay when ready
       playerRef.current.playVideo();
     }
   }, []);
@@ -57,7 +60,6 @@ const MusicSection = () => {
       setIsPlaying(false);
       if (intervalRef.current) clearInterval(intervalRef.current);
     } else if (event.data === YT.PlayerState.ENDED) {
-      // Play next song
       const newIndex = (currentSongIndex + 1) % songs.length;
       setCurrentSongIndex(newIndex);
       if (playerRef.current) {
@@ -88,7 +90,6 @@ const MusicSection = () => {
   }, []);
 
   useEffect(() => {
-    // Create a container for the player outside React's control
     if (playerContainerRef.current) {
       const playerDiv = document.createElement("div");
       playerDiv.id = playerIdRef.current;
@@ -134,14 +135,12 @@ const MusicSection = () => {
 
     loadYouTubeAPI();
 
-    // Set up callback for when API is ready
     const originalCallback = (window as any).onYouTubeIframeAPIReady;
     (window as any).onYouTubeIframeAPIReady = () => {
       if (originalCallback) originalCallback();
       createPlayer();
     };
 
-    // Check if API is already loaded
     if ((window as any).YT && (window as any).YT.Player) {
       createPlayer();
     }
@@ -156,7 +155,6 @@ const MusicSection = () => {
         }
         playerRef.current = null;
       }
-      // Remove the player container from body
       const playerDiv = document.getElementById(playerIdRef.current);
       if (playerDiv && playerDiv.parentNode) {
         playerDiv.parentNode.removeChild(playerDiv);
@@ -260,13 +258,28 @@ const MusicSection = () => {
               
               {/* Content */}
               <div className="relative z-10">
-                {/* Album Art / Visualizer */}
+                {/* Album Art with YouTube Thumbnail */}
                 <div className="relative w-full aspect-square max-w-[280px] mx-auto mb-6 rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 to-secondary border border-border">
+                  {/* YouTube Thumbnail Background */}
+                  <img 
+                    src={getThumbnail(songs[currentSongIndex].id)}
+                    alt={songs[currentSongIndex].title}
+                    className="absolute inset-0 w-full h-full object-cover opacity-30 blur-sm"
+                  />
+                  
                   {/* 3D Vinyl Effect */}
                   <div 
                     className={`absolute inset-4 rounded-full bg-gradient-to-br from-muted to-background border-4 border-muted ${isPlaying ? 'animate-spin' : ''}`}
                     style={{ animationDuration: "3s" }}
                   >
+                    {/* Center Thumbnail */}
+                    <div className="absolute inset-[15%] rounded-full overflow-hidden border-2 border-muted">
+                      <img 
+                        src={getThumbnail(songs[currentSongIndex].id)}
+                        alt={songs[currentSongIndex].title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                     <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.3)_31%,transparent_32%,rgba(0,0,0,0.2)_50%,transparent_51%,rgba(0,0,0,0.2)_70%,transparent_71%)]" />
                     <div className="absolute inset-[40%] rounded-full bg-primary glow-primary flex items-center justify-center">
                       <div className="w-2 h-2 rounded-full bg-background" />
@@ -347,56 +360,72 @@ const MusicSection = () => {
                     <SkipForward className="w-6 h-6" />
                   </button>
                   
-                  <div className="w-9" /> {/* Spacer for symmetry */}
+                  <button
+                    onClick={() => setShowPlaylist(!showPlaylist)}
+                    className="p-2 text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    {showPlaylist ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                  </button>
                 </div>
               </div>
             </div>
 
-            {/* Playlist */}
-            <div className="mt-8 bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-border">
-              <h4 className="text-lg font-display text-foreground mb-4">Playlist</h4>
-              <div className="space-y-2 max-h-[200px] overflow-y-auto">
-                {songs.map((song, index) => (
-                  <button
-                    key={song.id}
-                    onClick={() => selectSong(index)}
-                    className={`w-full flex items-center gap-3 p-3 rounded-lg transition-all ${
-                      currentSongIndex === index 
-                        ? 'bg-primary/20 border border-primary/50' 
-                        : 'bg-secondary/50 hover:bg-secondary border border-transparent'
-                    }`}
-                  >
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      currentSongIndex === index ? 'bg-primary' : 'bg-muted'
-                    }`}>
-                      {currentSongIndex === index && isPlaying ? (
-                        <div className="flex items-end justify-center gap-[2px] h-3">
-                          {[1, 2, 3].map((i) => (
-                            <div
-                              key={i}
-                              className="w-[2px] bg-primary-foreground rounded-sm"
-                              style={{
-                                animation: 'visualizer 0.6s ease-in-out infinite',
-                                animationDelay: `${i * 0.15}s`,
-                                height: '100%',
-                              }}
-                            />
-                          ))}
-                        </div>
-                      ) : (
-                        <span className="text-xs font-bold text-foreground">{index + 1}</span>
-                      )}
-                    </div>
-                    <div className="text-left flex-1 min-w-0">
-                      <p className={`text-sm font-medium truncate ${
-                        currentSongIndex === index ? 'text-primary' : 'text-foreground'
-                      }`}>
-                        {song.title}
-                      </p>
-                      <p className="text-xs text-muted-foreground truncate">{song.artist}</p>
-                    </div>
-                  </button>
-                ))}
+            {/* Playlist - Collapsible */}
+            <div 
+              className={`mt-4 overflow-hidden transition-all duration-500 ease-in-out ${
+                showPlaylist ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'
+              }`}
+            >
+              <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-border">
+                <h4 className="text-lg font-display text-foreground mb-4">Playlist</h4>
+                <div className="space-y-2 max-h-[250px] overflow-y-auto">
+                  {songs.map((song, index) => (
+                    <button
+                      key={song.id}
+                      onClick={() => selectSong(index)}
+                      className={`w-full flex items-center gap-3 p-2 rounded-lg transition-all ${
+                        currentSongIndex === index 
+                          ? 'bg-primary/20 border border-primary/50' 
+                          : 'bg-secondary/50 hover:bg-secondary border border-transparent'
+                      }`}
+                    >
+                      {/* Thumbnail */}
+                      <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                        <img 
+                          src={getThumbnail(song.id)}
+                          alt={song.title}
+                          className="w-full h-full object-cover"
+                        />
+                        {currentSongIndex === index && isPlaying && (
+                          <div className="absolute inset-0 bg-background/60 flex items-center justify-center">
+                            <div className="flex items-end justify-center gap-[2px] h-4">
+                              {[1, 2, 3].map((i) => (
+                                <div
+                                  key={i}
+                                  className="w-[3px] bg-primary rounded-sm"
+                                  style={{
+                                    animation: 'visualizer 0.6s ease-in-out infinite',
+                                    animationDelay: `${i * 0.15}s`,
+                                    height: '100%',
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="text-left flex-1 min-w-0">
+                        <p className={`text-sm font-medium truncate ${
+                          currentSongIndex === index ? 'text-primary' : 'text-foreground'
+                        }`}>
+                          {song.title}
+                        </p>
+                        <p className="text-xs text-muted-foreground truncate">{song.artist}</p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
