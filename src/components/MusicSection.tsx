@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX } from "lucide-react";
 
 const songs = [
@@ -20,6 +20,7 @@ interface YouTubePlayer {
   mute: () => void;
   unMute: () => void;
   isMuted: () => boolean;
+  destroy: () => void;
 }
 
 const MusicSection = () => {
@@ -30,26 +31,115 @@ const MusicSection = () => {
   const [duration, setDuration] = useState("0:00");
   const [isReady, setIsReady] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [hasAutoPlayed, setHasAutoPlayed] = useState(false);
   const playerRef = useRef<YouTubePlayer | null>(null);
+  const playerContainerRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const playerIdRef = useRef<string>(`yt-player-${Date.now()}`);
+
+  const onPlayerReady = useCallback(() => {
+    setIsReady(true);
+    if (playerRef.current) {
+      const total = playerRef.current.getDuration();
+      setDuration(formatTime(total));
+      // Autoplay when ready
+      playerRef.current.playVideo();
+    }
+  }, []);
+
+  const onPlayerStateChange = useCallback((event: { data: number }) => {
+    const YT = (window as any).YT;
+    if (!YT) return;
+    
+    if (event.data === YT.PlayerState.PLAYING) {
+      setIsPlaying(true);
+      startProgressInterval();
+    } else if (event.data === YT.PlayerState.PAUSED) {
+      setIsPlaying(false);
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    } else if (event.data === YT.PlayerState.ENDED) {
+      // Play next song
+      const newIndex = (currentSongIndex + 1) % songs.length;
+      setCurrentSongIndex(newIndex);
+      if (playerRef.current) {
+        playerRef.current.loadVideoById(songs[newIndex].id);
+        setProgress(0);
+        setCurrentTime("0:00");
+      }
+    }
+  }, [currentSongIndex]);
+
+  const startProgressInterval = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      if (playerRef.current) {
+        try {
+          const current = playerRef.current.getCurrentTime();
+          const total = playerRef.current.getDuration();
+          if (total > 0) {
+            setProgress((current / total) * 100);
+            setCurrentTime(formatTime(current));
+            setDuration(formatTime(total));
+          }
+        } catch (e) {
+          // Player might not be ready
+        }
+      }
+    }, 1000);
+  }, []);
 
   useEffect(() => {
-    // Load YouTube IFrame API
-    if (!(window as any).YT) {
-      const tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
-      const firstScriptTag = document.getElementsByTagName("script")[0];
-      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+    // Create a container for the player outside React's control
+    if (playerContainerRef.current) {
+      const playerDiv = document.createElement("div");
+      playerDiv.id = playerIdRef.current;
+      playerDiv.style.position = "absolute";
+      playerDiv.style.width = "1px";
+      playerDiv.style.height = "1px";
+      playerDiv.style.overflow = "hidden";
+      playerDiv.style.opacity = "0";
+      playerDiv.style.pointerEvents = "none";
+      document.body.appendChild(playerDiv);
     }
 
-    const initPlayer = () => {
-      if ((window as any).YT && (window as any).YT.Player) {
-        createPlayer();
+    const loadYouTubeAPI = () => {
+      if (!(window as any).YT) {
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName("script")[0];
+        firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
       }
     };
 
-    (window as any).onYouTubeIframeAPIReady = initPlayer;
+    const createPlayer = () => {
+      if ((window as any).YT && (window as any).YT.Player && !playerRef.current) {
+        playerRef.current = new (window as any).YT.Player(playerIdRef.current, {
+          height: "1",
+          width: "1",
+          videoId: songs[0].id,
+          playerVars: {
+            autoplay: 1,
+            controls: 0,
+            disablekb: 1,
+            fs: 0,
+            modestbranding: 1,
+            playsinline: 1,
+          },
+          events: {
+            onStateChange: onPlayerStateChange,
+            onReady: onPlayerReady,
+          },
+        });
+      }
+    };
+
+    loadYouTubeAPI();
+
+    // Set up callback for when API is ready
+    const originalCallback = (window as any).onYouTubeIframeAPIReady;
+    (window as any).onYouTubeIframeAPIReady = () => {
+      if (originalCallback) originalCallback();
+      createPlayer();
+    };
 
     // Check if API is already loaded
     if ((window as any).YT && (window as any).YT.Player) {
@@ -58,69 +148,24 @@ const MusicSection = () => {
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, []);
-
-  const createPlayer = () => {
-    playerRef.current = new (window as any).YT.Player("music-section-player", {
-      height: "0",
-      width: "0",
-      videoId: songs[currentSongIndex].id,
-      playerVars: {
-        autoplay: 1,
-        controls: 0,
-        mute: 0,
-      },
-      events: {
-        onStateChange: onPlayerStateChange,
-        onReady: onPlayerReady,
-      },
-    });
-  };
-
-  const onPlayerReady = () => {
-    setIsReady(true);
-    updateDuration();
-    // Autoplay when ready
-    if (!hasAutoPlayed && playerRef.current) {
-      playerRef.current.playVideo();
-      setHasAutoPlayed(true);
-    }
-  };
-
-  const onPlayerStateChange = (event: { data: number }) => {
-    const YT = (window as any).YT;
-    if (event.data === YT.PlayerState.PLAYING) {
-      setIsPlaying(true);
-      startProgressInterval();
-    } else if (event.data === YT.PlayerState.PAUSED) {
-      setIsPlaying(false);
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    } else if (event.data === YT.PlayerState.ENDED) {
-      nextSong();
-    }
-  };
-
-  const startProgressInterval = () => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
       if (playerRef.current) {
-        const current = playerRef.current.getCurrentTime();
-        const total = playerRef.current.getDuration();
-        setProgress((current / total) * 100);
-        setCurrentTime(formatTime(current));
+        try {
+          playerRef.current.destroy();
+        } catch (e) {
+          // Ignore cleanup errors
+        }
+        playerRef.current = null;
       }
-    }, 1000);
-  };
-
-  const updateDuration = () => {
-    if (playerRef.current) {
-      const total = playerRef.current.getDuration();
-      setDuration(formatTime(total));
-    }
-  };
+      // Remove the player container from body
+      const playerDiv = document.getElementById(playerIdRef.current);
+      if (playerDiv && playerDiv.parentNode) {
+        playerDiv.parentNode.removeChild(playerDiv);
+      }
+    };
+  }, [onPlayerReady, onPlayerStateChange]);
 
   const formatTime = (seconds: number) => {
+    if (!seconds || isNaN(seconds)) return "0:00";
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs.toString().padStart(2, "0")}`;
@@ -179,7 +224,7 @@ const MusicSection = () => {
 
   return (
     <section id="music" className="min-h-screen py-20 px-4 relative overflow-hidden">
-      <div id="music-section-player" className="hidden" />
+      <div ref={playerContainerRef} />
       
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/20 to-background" />
