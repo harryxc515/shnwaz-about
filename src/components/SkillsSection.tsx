@@ -1,4 +1,5 @@
 import ScrollAnimationWrapper from "./ScrollAnimationWrapper";
+import ParallaxWrapper from "./ParallaxWrapper";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 interface Skill {
@@ -49,8 +50,16 @@ const SkillsSection = () => {
   ];
 
   return (
-    <section id="skills" className="py-24 bg-card/30">
-      <div className="container mx-auto px-6">
+    <section id="skills" className="py-24 bg-card/30 relative overflow-hidden">
+      {/* Parallax background elements */}
+      <ParallaxWrapper speed={0.2} direction="up" className="absolute top-40 right-20">
+        <div className="w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
+      </ParallaxWrapper>
+      <ParallaxWrapper speed={0.3} direction="down" className="absolute bottom-40 left-20">
+        <div className="w-60 h-60 bg-primary/5 rounded-full blur-3xl" />
+      </ParallaxWrapper>
+
+      <div className="container mx-auto px-6 relative z-10">
         <ScrollAnimationWrapper animation="fade-up" className="text-center mb-16">
           <p className="text-primary font-body uppercase tracking-widest mb-2">My Expertise</p>
           <h2 className="text-5xl md:text-6xl font-display text-foreground">Skills & Proficiency</h2>
@@ -58,30 +67,34 @@ const SkillsSection = () => {
 
         <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
           {/* Technical Skills */}
-          <ScrollAnimationWrapper animation="fade-left">
-            <div className="bg-card p-8 rounded-2xl border border-border">
-              <h3 className="text-2xl font-display text-foreground mb-8 flex items-center gap-3">
-                <span className="w-3 h-3 bg-primary rounded-full"></span>
-                Technical Skills
-              </h3>
-              {technicalSkills.map((skill, index) => (
-                <SkillBar key={skill.name} skill={skill} delay={index * 100} />
-              ))}
-            </div>
-          </ScrollAnimationWrapper>
+          <ParallaxWrapper speed={0.1} direction="up">
+            <ScrollAnimationWrapper animation="fade-left">
+              <div className="bg-card p-8 rounded-2xl border border-border">
+                <h3 className="text-2xl font-display text-foreground mb-8 flex items-center gap-3">
+                  <span className="w-3 h-3 bg-primary rounded-full"></span>
+                  Technical Skills
+                </h3>
+                {technicalSkills.map((skill, index) => (
+                  <SkillBar key={skill.name} skill={skill} delay={index * 100} />
+                ))}
+              </div>
+            </ScrollAnimationWrapper>
+          </ParallaxWrapper>
 
           {/* Other Skills */}
-          <ScrollAnimationWrapper animation="fade-right">
-            <div className="bg-card p-8 rounded-2xl border border-border">
-              <h3 className="text-2xl font-display text-foreground mb-8 flex items-center gap-3">
-                <span className="w-3 h-3 bg-primary rounded-full"></span>
-                Other Skills
-              </h3>
-              {otherSkills.map((skill, index) => (
-                <SkillBar key={skill.name} skill={skill} delay={index * 100} />
-              ))}
-            </div>
-          </ScrollAnimationWrapper>
+          <ParallaxWrapper speed={0.15} direction="up">
+            <ScrollAnimationWrapper animation="fade-right">
+              <div className="bg-card p-8 rounded-2xl border border-border">
+                <h3 className="text-2xl font-display text-foreground mb-8 flex items-center gap-3">
+                  <span className="w-3 h-3 bg-primary rounded-full"></span>
+                  Other Skills
+                </h3>
+                {otherSkills.map((skill, index) => (
+                  <SkillBar key={skill.name} skill={skill} delay={index * 100} />
+                ))}
+              </div>
+            </ScrollAnimationWrapper>
+          </ParallaxWrapper>
         </div>
       </div>
     </section>

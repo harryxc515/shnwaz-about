@@ -87,11 +87,11 @@
     animation: pulse-glow 2s ease-in-out infinite;
   }
 
-  /* Scroll animations */
+  /* Continuous scroll animations - animate in AND out */
   .scroll-hidden {
     opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transform: translateY(50px);
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .scroll-visible {
@@ -101,14 +101,14 @@
 
   .scroll-hidden-left {
     opacity: 0;
-    transform: translateX(-60px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transform: translateX(-80px);
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .scroll-hidden-right {
     opacity: 0;
-    transform: translateX(60px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transform: translateX(80px);
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .scroll-visible-x {
@@ -118,13 +118,32 @@
 
   .scroll-hidden-scale {
     opacity: 0;
-    transform: scale(0.9);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transform: scale(0.85);
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .scroll-visible-scale {
     opacity: 1;
     transform: scale(1);
+  }
+
+  /* Scrollbar styling */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted)) transparent;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted));
+    border-radius: 4px;
   }
 }
 
