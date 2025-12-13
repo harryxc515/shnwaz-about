@@ -1,5 +1,6 @@
 import { Code, Palette, Terminal, Zap } from "lucide-react";
 import ScrollAnimationWrapper from "./ScrollAnimationWrapper";
+import ParallaxWrapper from "./ParallaxWrapper";
 import profileImage from "@/assets/profile.jpg";
 
 const AboutSection = () => {
@@ -11,23 +12,33 @@ const AboutSection = () => {
   ];
 
   return (
-    <section id="about" className="py-16 md:py-24 relative">
-      <div className="container mx-auto px-4 md:px-6">
+    <section id="about" className="py-16 md:py-24 relative overflow-hidden">
+      {/* Background parallax elements */}
+      <ParallaxWrapper speed={0.15} direction="right" className="absolute top-20 left-10">
+        <div className="w-40 h-40 bg-primary/5 rounded-full blur-3xl" />
+      </ParallaxWrapper>
+      <ParallaxWrapper speed={0.2} direction="left" className="absolute bottom-20 right-10">
+        <div className="w-60 h-60 bg-primary/5 rounded-full blur-3xl" />
+      </ParallaxWrapper>
+
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
           {/* Image section */}
-          <ScrollAnimationWrapper animation="fade-left" className="flex-shrink-0">
-            <div className="relative">
-              <div className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 bg-primary rounded-2xl overflow-hidden mx-auto border-2 border-primary/30">
-                <img 
-                  src={profileImage} 
-                  alt="SHNWAZX Profile" 
-                  className="w-full h-full object-cover object-top"
-                />
+          <ParallaxWrapper speed={0.15} direction="up" scale className="flex-shrink-0">
+            <ScrollAnimationWrapper animation="fade-left">
+              <div className="relative">
+                <div className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 bg-primary rounded-2xl overflow-hidden mx-auto border-2 border-primary/30">
+                  <img 
+                    src={profileImage} 
+                    alt="SHNWAZX Profile" 
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
+                {/* Decorative corner */}
+                <div className="absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 w-12 h-12 md:w-16 md:h-16 bg-primary/20 rounded-lg -z-10" />
               </div>
-              {/* Decorative corner */}
-              <div className="absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 w-12 h-12 md:w-16 md:h-16 bg-primary/20 rounded-lg -z-10" />
-            </div>
-          </ScrollAnimationWrapper>
+            </ScrollAnimationWrapper>
+          </ParallaxWrapper>
 
           {/* Content section */}
           <div className="flex-1 text-center lg:text-left">
