@@ -75,7 +75,6 @@ const MusicSection = () => {
     if (playerRef.current) {
       const total = playerRef.current.getDuration();
       setDuration(formatTime(total));
-      playerRef.current.playVideo();
     }
   }, []);
 
@@ -123,7 +122,7 @@ const MusicSection = () => {
           width: "1",
           videoId: songs[0].id,
           playerVars: {
-            autoplay: 1,
+            autoplay: 0,
             controls: 0,
             disablekb: 1,
             fs: 0,
