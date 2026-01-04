@@ -1,4 +1,5 @@
 import { Instagram, Github, Youtube, Send } from "lucide-react";
+import logo from "@/assets/i-cook-children-logo.png";
 
 const Footer = () => {
   const socialLinks = [
@@ -11,10 +12,13 @@ const Footer = () => {
   return (
     <footer className="py-8 border-t border-border">
       <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-muted-foreground font-body text-sm">
-            © 2024 SHNWAZX. All rights reserved.
-          </p>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <img src={logo} alt="I Cook Children Logo" className="h-10 w-auto" />
+            <p className="text-muted-foreground font-body text-sm">
+              © 2024 SHNWAZX. All rights reserved.
+            </p>
+          </div>
 
           <div className="flex items-center gap-4">
             {socialLinks.map((social) => (
