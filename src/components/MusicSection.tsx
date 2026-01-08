@@ -54,14 +54,16 @@ const MusicSection = () => {
   const playerRef = useRef<YouTubePlayer | null>(null);
   const playerIdRef = useRef<string>(`yt-player-${Date.now()}`);
   const animationRef = useRef<number>();
+  const currentIndexRef = useRef(0);
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    currentIndexRef.current = currentSongIndex;
+  }, [currentSongIndex]);
 
   // Animate waveform when playing
   useEffect(() => {
     if (isPlaying) {
-      const animate = () => {
-        setWaveformKey(prev => prev + 1);
-        animationRef.current = requestAnimationFrame(animate);
-      };
       const interval = setInterval(() => {
         setWaveformKey(prev => prev + 1);
       }, 150);
@@ -72,23 +74,32 @@ const MusicSection = () => {
     }
   }, [isPlaying]);
 
-  const onPlayerStateChange = useCallback((event: { data: number }) => {
-    const YT = (window as any).YT;
-    if (!YT) return;
-    if (event.data === YT.PlayerState.PLAYING) setIsPlaying(true);
-    else if (event.data === YT.PlayerState.PAUSED) setIsPlaying(false);
-    else if (event.data === YT.PlayerState.ENDED) {
-      const newIndex = (currentSongIndex + 1) % songs.length;
-      setCurrentSongIndex(newIndex);
-      playerRef.current?.loadVideoById(songs[newIndex].id);
-    }
-  }, [currentSongIndex]);
+  // Play next song function
+  const playNextSong = useCallback(() => {
+    const newIndex = (currentIndexRef.current + 1) % songs.length;
+    currentIndexRef.current = newIndex;
+    setCurrentSongIndex(newIndex);
+    playerRef.current?.loadVideoById(songs[newIndex].id);
+  }, []);
 
   useEffect(() => {
     const playerDiv = document.createElement("div");
     playerDiv.id = playerIdRef.current;
     playerDiv.style.cssText = "position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;";
     document.body.appendChild(playerDiv);
+
+    const onStateChange = (event: { data: number }) => {
+      const YT = (window as any).YT;
+      if (!YT) return;
+      if (event.data === YT.PlayerState.PLAYING) {
+        setIsPlaying(true);
+      } else if (event.data === YT.PlayerState.PAUSED) {
+        setIsPlaying(false);
+      } else if (event.data === YT.PlayerState.ENDED) {
+        // Auto-play next song
+        playNextSong();
+      }
+    };
 
     const createPlayer = () => {
       if ((window as any).YT?.Player && !playerRef.current) {
@@ -98,7 +109,7 @@ const MusicSection = () => {
           videoId: songs[0].id,
           playerVars: { autoplay: 0, controls: 0 },
           events: {
-            onStateChange: onPlayerStateChange,
+            onStateChange: onStateChange,
             onReady: () => setIsReady(true),
           },
         });
@@ -116,9 +127,10 @@ const MusicSection = () => {
 
     return () => {
       playerRef.current?.destroy();
+      playerRef.current = null;
       document.getElementById(playerIdRef.current)?.remove();
     };
-  }, [onPlayerStateChange]);
+  }, [playNextSong]);
 
   const togglePlay = () => {
     if (!isReady) return;
@@ -126,18 +138,21 @@ const MusicSection = () => {
   };
 
   const nextSong = () => {
-    const newIndex = (currentSongIndex + 1) % songs.length;
+    const newIndex = (currentIndexRef.current + 1) % songs.length;
+    currentIndexRef.current = newIndex;
     setCurrentSongIndex(newIndex);
     playerRef.current?.loadVideoById(songs[newIndex].id);
   };
 
   const prevSong = () => {
-    const newIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+    const newIndex = (currentIndexRef.current - 1 + songs.length) % songs.length;
+    currentIndexRef.current = newIndex;
     setCurrentSongIndex(newIndex);
     playerRef.current?.loadVideoById(songs[newIndex].id);
   };
 
   const selectSong = (index: number) => {
+    currentIndexRef.current = index;
     setCurrentSongIndex(index);
     playerRef.current?.loadVideoById(songs[index].id);
     setShowPlaylist(false);
