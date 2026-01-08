@@ -2,12 +2,13 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Play, Pause, SkipBack, SkipForward, Music, X } from "lucide-react";
 
 const songs = [
-  { id: "SmZpCs4QlY0", title: "Featured Track", artist: "SHNWAZX" },
-  { id: "BBM57gr9fFU", title: "Track 1", artist: "SHNWAZX" },
-  { id: "nNUYfQu7vCY", title: "Track 2", artist: "SHNWAZX" },
-  { id: "UvmffFRojQA", title: "Track 3", artist: "SHNWAZX" },
-  { id: "oQFNHR9U_hU", title: "Track 4", artist: "SHNWAZX" },
-  { id: "l5sgIqzlPXc", title: "Track 5", artist: "SHNWAZX" },
+  { id: "47mUgngp3bk", title: "Featured Track", artist: "SHNWAZX" },
+  { id: "SmZpCs4QlY0", title: "Track 1", artist: "SHNWAZX" },
+  { id: "BBM57gr9fFU", title: "Track 2", artist: "SHNWAZX" },
+  { id: "nNUYfQu7vCY", title: "Track 3", artist: "SHNWAZX" },
+  { id: "UvmffFRojQA", title: "Track 4", artist: "SHNWAZX" },
+  { id: "oQFNHR9U_hU", title: "Track 5", artist: "SHNWAZX" },
+  { id: "l5sgIqzlPXc", title: "Track 6", artist: "SHNWAZX" },
 ];
 
 const getThumbnail = (videoId: string) => `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
