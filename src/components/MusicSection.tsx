@@ -3,12 +3,15 @@ import { Play, Pause, SkipBack, SkipForward, Music, X } from "lucide-react";
 
 const songs = [
   { id: "47mUgngp3bk", title: "Featured Track", artist: "SHNWAZX" },
-  { id: "SmZpCs4QlY0", title: "Track 1", artist: "SHNWAZX" },
-  { id: "BBM57gr9fFU", title: "Track 2", artist: "SHNWAZX" },
-  { id: "nNUYfQu7vCY", title: "Track 3", artist: "SHNWAZX" },
-  { id: "UvmffFRojQA", title: "Track 4", artist: "SHNWAZX" },
-  { id: "oQFNHR9U_hU", title: "Track 5", artist: "SHNWAZX" },
-  { id: "l5sgIqzlPXc", title: "Track 6", artist: "SHNWAZX" },
+  { id: "MVuX0FrR-hA", title: "Track 1", artist: "SHNWAZX" },
+  { id: "MU-kqztMG5M", title: "Track 2", artist: "SHNWAZX" },
+  { id: "Gf5yYICFJMg", title: "Track 3", artist: "SHNWAZX" },
+  { id: "SmZpCs4QlY0", title: "Track 4", artist: "SHNWAZX" },
+  { id: "BBM57gr9fFU", title: "Track 5", artist: "SHNWAZX" },
+  { id: "nNUYfQu7vCY", title: "Track 6", artist: "SHNWAZX" },
+  { id: "UvmffFRojQA", title: "Track 7", artist: "SHNWAZX" },
+  { id: "oQFNHR9U_hU", title: "Track 8", artist: "SHNWAZX" },
+  { id: "l5sgIqzlPXc", title: "Track 9", artist: "SHNWAZX" },
 ];
 
 const getThumbnail = (videoId: string) => `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
