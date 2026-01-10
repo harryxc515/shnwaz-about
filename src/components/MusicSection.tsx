@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Play, Pause, SkipBack, SkipForward, List, X } from "lucide-react";
+import { Play, Pause, SkipBack, SkipForward, List, X, Volume2, VolumeX } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
 
 const songs = [
   { id: "47mUgngp3bk", title: "Featured Track", artist: "SHNWAZX" },
@@ -16,11 +17,22 @@ const songs = [
 
 const getThumbnail = (videoId: string) => `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
+const formatTime = (seconds: number) => {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+};
+
 interface YouTubePlayer {
   playVideo: () => void;
   pauseVideo: () => void;
   loadVideoById: (videoId: string) => void;
   destroy: () => void;
+  setVolume: (volume: number) => void;
+  getVolume: () => number;
+  getCurrentTime: () => number;
+  getDuration: () => number;
+  seekTo: (seconds: number, allowSeekAhead: boolean) => void;
 }
 
 // Waveform visualizer component
@@ -51,28 +63,75 @@ const MusicSection = () => {
   const [showPlaylist, setShowPlaylist] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [waveformKey, setWaveformKey] = useState(0);
+  const [volume, setVolume] = useState(80);
+  const [isMuted, setIsMuted] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const playerRef = useRef<YouTubePlayer | null>(null);
   const playerIdRef = useRef<string>(`yt-player-${Date.now()}`);
   const animationRef = useRef<number>();
   const currentIndexRef = useRef(0);
+  const progressIntervalRef = useRef<NodeJS.Timeout>();
+  const previousVolumeRef = useRef(80);
 
   // Keep ref in sync with state
   useEffect(() => {
     currentIndexRef.current = currentSongIndex;
   }, [currentSongIndex]);
 
-  // Animate waveform when playing
+  // Animate waveform and track progress when playing
   useEffect(() => {
     if (isPlaying) {
       const interval = setInterval(() => {
         setWaveformKey(prev => prev + 1);
       }, 150);
+      
+      progressIntervalRef.current = setInterval(() => {
+        if (playerRef.current) {
+          const time = playerRef.current.getCurrentTime();
+          const dur = playerRef.current.getDuration();
+          setCurrentTime(time);
+          if (dur && dur > 0) setDuration(dur);
+        }
+      }, 500);
+      
       return () => {
         clearInterval(interval);
+        if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
         if (animationRef.current) cancelAnimationFrame(animationRef.current);
       };
+    } else {
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
     }
   }, [isPlaying]);
+
+  // Volume control
+  const handleVolumeChange = (value: number[]) => {
+    const newVolume = value[0];
+    setVolume(newVolume);
+    setIsMuted(newVolume === 0);
+    playerRef.current?.setVolume(newVolume);
+  };
+
+  const toggleMute = () => {
+    if (isMuted) {
+      setIsMuted(false);
+      setVolume(previousVolumeRef.current);
+      playerRef.current?.setVolume(previousVolumeRef.current);
+    } else {
+      previousVolumeRef.current = volume;
+      setIsMuted(true);
+      setVolume(0);
+      playerRef.current?.setVolume(0);
+    }
+  };
+
+  // Seek functionality
+  const handleSeek = (value: number[]) => {
+    const seekTime = value[0];
+    setCurrentTime(seekTime);
+    playerRef.current?.seekTo(seekTime, true);
+  };
 
   // Play next song function
   const playNextSong = useCallback(() => {
@@ -238,6 +297,26 @@ const MusicSection = () => {
                       </div>
                     </div>
                   </div>
+
+                  {/* Progress Bar */}
+                  <div className="mt-4 px-2">
+                    <div className="flex items-center gap-3">
+                      <span className="text-white/40 text-xs font-mono w-10">
+                        {formatTime(currentTime)}
+                      </span>
+                      <Slider
+                        value={[currentTime]}
+                        min={0}
+                        max={duration || 100}
+                        step={1}
+                        onValueChange={handleSeek}
+                        className="flex-1 cursor-pointer [&>span:first-child]:h-1 [&>span:first-child]:bg-white/20 [&_[role=slider]]:h-3 [&_[role=slider]]:w-3 [&_[role=slider]]:border-0 [&_[role=slider]]:bg-white [&>span:first-child>span]:bg-white"
+                      />
+                      <span className="text-white/40 text-xs font-mono w-10 text-right">
+                        {formatTime(duration)}
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Controls Section */}
@@ -292,11 +371,26 @@ const MusicSection = () => {
                     </button>
                   </div>
 
-                  {/* Track Counter */}
-                  <div className="w-11 text-right">
-                    <span className="text-white/30 text-xs font-mono tracking-wider">
-                      {songs.length} TRK
-                    </span>
+                  {/* Volume Control */}
+                  <div className="flex items-center gap-2 w-32">
+                    <button
+                      onClick={toggleMute}
+                      className="p-2 text-white/50 hover:text-white transition-colors"
+                    >
+                      {isMuted || volume === 0 ? (
+                        <VolumeX className="w-4 h-4" />
+                      ) : (
+                        <Volume2 className="w-4 h-4" />
+                      )}
+                    </button>
+                    <Slider
+                      value={[volume]}
+                      min={0}
+                      max={100}
+                      step={1}
+                      onValueChange={handleVolumeChange}
+                      className="flex-1 cursor-pointer [&>span:first-child]:h-1 [&>span:first-child]:bg-white/20 [&_[role=slider]]:h-3 [&_[role=slider]]:w-3 [&_[role=slider]]:border-0 [&_[role=slider]]:bg-white [&>span:first-child>span]:bg-white"
+                    />
                   </div>
                 </div>
               </div>
