@@ -16,6 +16,10 @@ const songs = [
   { id: "MsGhyzKml5U", title: "Track 10", artist: "SHNWAZX" },
   { id: "NhWKTo6U0cQ", title: "Track 11", artist: "SHNWAZX" },
   { id: "mEM0KWhQp44", title: "Track 12", artist: "SHNWAZX" },
+  { id: "1IIyzob_yi8", title: "Track 13", artist: "SHNWAZX" },
+  { id: "xlYptBV0ko4", title: "Track 14", artist: "SHNWAZX" },
+  { id: "j9_aK9WtjJU", title: "Track 15", artist: "SHNWAZX" },
+  { id: "MHCsrKA9gh8", title: "Track 16", artist: "SHNWAZX" },
 ];
 
 const getThumbnail = (videoId: string) => `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
