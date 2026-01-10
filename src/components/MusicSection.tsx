@@ -3,23 +3,23 @@ import { Play, Pause, SkipBack, SkipForward, List, X, Volume2, VolumeX, Shuffle,
 import { Slider } from "@/components/ui/slider";
 
 const songs = [
-  { id: "47mUgngp3bk", title: "Featured Track", artist: "SHNWAZX" },
-  { id: "MVuX0FrR-hA", title: "Track 1", artist: "SHNWAZX" },
-  { id: "MU-kqztMG5M", title: "Track 2", artist: "SHNWAZX" },
-  { id: "Gf5yYICFJMg", title: "Track 3", artist: "SHNWAZX" },
-  { id: "SmZpCs4QlY0", title: "Track 4", artist: "SHNWAZX" },
-  { id: "BBM57gr9fFU", title: "Track 5", artist: "SHNWAZX" },
-  { id: "nNUYfQu7vCY", title: "Track 6", artist: "SHNWAZX" },
-  { id: "UvmffFRojQA", title: "Track 7", artist: "SHNWAZX" },
-  { id: "oQFNHR9U_hU", title: "Track 8", artist: "SHNWAZX" },
-  { id: "l5sgIqzlPXc", title: "Track 9", artist: "SHNWAZX" },
-  { id: "MsGhyzKml5U", title: "Track 10", artist: "SHNWAZX" },
-  { id: "NhWKTo6U0cQ", title: "Track 11", artist: "SHNWAZX" },
-  { id: "mEM0KWhQp44", title: "Track 12", artist: "SHNWAZX" },
-  { id: "1IIyzob_yi8", title: "Track 13", artist: "SHNWAZX" },
-  { id: "xlYptBV0ko4", title: "Track 14", artist: "SHNWAZX" },
-  { id: "j9_aK9WtjJU", title: "Track 15", artist: "SHNWAZX" },
-  { id: "MHCsrKA9gh8", title: "Track 16", artist: "SHNWAZX" },
+  { id: "47mUgngp3bk", title: "Midnight Echoes", artist: "SHNWAZX" },
+  { id: "MVuX0FrR-hA", title: "Neon Dreams", artist: "SHNWAZX" },
+  { id: "MU-kqztMG5M", title: "Electric Soul", artist: "SHNWAZX" },
+  { id: "Gf5yYICFJMg", title: "Shadow Dance", artist: "SHNWAZX" },
+  { id: "SmZpCs4QlY0", title: "Crystal Waves", artist: "SHNWAZX" },
+  { id: "BBM57gr9fFU", title: "Lost in Time", artist: "SHNWAZX" },
+  { id: "nNUYfQu7vCY", title: "Digital Horizon", artist: "SHNWAZX" },
+  { id: "UvmffFRojQA", title: "Silent Storm", artist: "SHNWAZX" },
+  { id: "oQFNHR9U_hU", title: "Velvet Night", artist: "SHNWAZX" },
+  { id: "l5sgIqzlPXc", title: "Fading Light", artist: "SHNWAZX" },
+  { id: "MsGhyzKml5U", title: "Urban Pulse", artist: "SHNWAZX" },
+  { id: "NhWKTo6U0cQ", title: "Dreamscape", artist: "SHNWAZX" },
+  { id: "mEM0KWhQp44", title: "Infinite Loop", artist: "SHNWAZX" },
+  { id: "1IIyzob_yi8", title: "Starlight", artist: "SHNWAZX" },
+  { id: "xlYptBV0ko4", title: "Cosmic Drift", artist: "SHNWAZX" },
+  { id: "j9_aK9WtjJU", title: "After Hours", artist: "SHNWAZX" },
+  { id: "MHCsrKA9gh8", title: "Final Chapter", artist: "SHNWAZX" },
 ];
 
 const getThumbnail = (videoId: string) => `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
@@ -42,21 +42,19 @@ interface YouTubePlayer {
   seekTo: (seconds: number, allowSeekAhead: boolean) => void;
 }
 
-// Waveform visualizer component
-const WaveformVisualizer = ({ isPlaying }: { isPlaying: boolean }) => {
-  const bars = 40;
+// Simple visualizer - just 3 bars
+const SimpleVisualizer = ({ isPlaying }: { isPlaying: boolean }) => {
   return (
-    <div className="flex items-end justify-center gap-[2px] h-16 w-full">
-      {Array.from({ length: bars }).map((_, i) => (
+    <div className="flex items-end justify-center gap-1 h-8">
+      {[1, 2, 3].map((i) => (
         <div
           key={i}
-          className="w-1 bg-white/90 rounded-full transition-all duration-150"
+          className={`w-1 bg-white rounded-full transition-all duration-300 ${
+            isPlaying ? 'animate-pulse' : ''
+          }`}
           style={{
-            height: isPlaying 
-              ? `${Math.random() * 60 + 20}%` 
-              : `${Math.sin(i * 0.3) * 20 + 25}%`,
-            animationDelay: `${i * 20}ms`,
-            transition: isPlaying ? 'height 0.15s ease' : 'height 0.5s ease',
+            height: isPlaying ? `${60 + i * 10}%` : '30%',
+            animationDelay: `${i * 150}ms`,
           }}
         />
       ))}
@@ -425,9 +423,9 @@ const MusicSection = () => {
                       className="w-full h-full object-cover opacity-40"
                     />
                     
-                    {/* Waveform Visualizer Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center px-8">
-                      <WaveformVisualizer key={waveformKey} isPlaying={isPlaying} />
+                    {/* Simple Visualizer Overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <SimpleVisualizer isPlaying={isPlaying} />
                     </div>
 
                     {/* Song Info Overlay */}
