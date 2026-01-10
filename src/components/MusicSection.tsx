@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Play, Pause, SkipBack, SkipForward, List, X, Volume2, VolumeX } from "lucide-react";
+import { Play, Pause, SkipBack, SkipForward, List, X, Volume2, VolumeX, Shuffle, Repeat, Repeat1 } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 
 const songs = [
@@ -13,6 +13,9 @@ const songs = [
   { id: "UvmffFRojQA", title: "Track 7", artist: "SHNWAZX" },
   { id: "oQFNHR9U_hU", title: "Track 8", artist: "SHNWAZX" },
   { id: "l5sgIqzlPXc", title: "Track 9", artist: "SHNWAZX" },
+  { id: "MsGhyzKml5U", title: "Track 10", artist: "SHNWAZX" },
+  { id: "NhWKTo6U0cQ", title: "Track 11", artist: "SHNWAZX" },
+  { id: "mEM0KWhQp44", title: "Track 12", artist: "SHNWAZX" },
 ];
 
 const getThumbnail = (videoId: string) => `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
@@ -57,6 +60,8 @@ const WaveformVisualizer = ({ isPlaying }: { isPlaying: boolean }) => {
   );
 };
 
+type RepeatMode = 'off' | 'all' | 'one';
+
 const MusicSection = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
@@ -67,17 +72,58 @@ const MusicSection = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isShuffled, setIsShuffled] = useState(false);
+  const [repeatMode, setRepeatMode] = useState<RepeatMode>('off');
+  const [shuffledIndices, setShuffledIndices] = useState<number[]>([]);
   const playerRef = useRef<YouTubePlayer | null>(null);
   const playerIdRef = useRef<string>(`yt-player-${Date.now()}`);
   const animationRef = useRef<number>();
   const currentIndexRef = useRef(0);
   const progressIntervalRef = useRef<NodeJS.Timeout>();
   const previousVolumeRef = useRef(80);
+  const isShuffledRef = useRef(false);
+  const repeatModeRef = useRef<RepeatMode>('off');
+  const shuffledIndicesRef = useRef<number[]>([]);
 
-  // Keep ref in sync with state
+  // Keep refs in sync with state
   useEffect(() => {
     currentIndexRef.current = currentSongIndex;
   }, [currentSongIndex]);
+
+  useEffect(() => {
+    isShuffledRef.current = isShuffled;
+    shuffledIndicesRef.current = shuffledIndices;
+  }, [isShuffled, shuffledIndices]);
+
+  useEffect(() => {
+    repeatModeRef.current = repeatMode;
+  }, [repeatMode]);
+
+  // Generate shuffled indices
+  const generateShuffledIndices = useCallback(() => {
+    const indices = Array.from({ length: songs.length }, (_, i) => i);
+    for (let i = indices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [indices[i], indices[j]] = [indices[j], indices[i]];
+    }
+    return indices;
+  }, []);
+
+  const toggleShuffle = () => {
+    if (!isShuffled) {
+      const newIndices = generateShuffledIndices();
+      setShuffledIndices(newIndices);
+    }
+    setIsShuffled(!isShuffled);
+  };
+
+  const toggleRepeat = () => {
+    setRepeatMode(prev => {
+      if (prev === 'off') return 'all';
+      if (prev === 'all') return 'one';
+      return 'off';
+    });
+  };
 
   // Animate waveform and track progress when playing
   useEffect(() => {
@@ -135,9 +181,33 @@ const MusicSection = () => {
 
   // Play next song function
   const playNextSong = useCallback(() => {
-    const newIndex = (currentIndexRef.current + 1) % songs.length;
+    // Handle repeat one mode
+    if (repeatModeRef.current === 'one') {
+      playerRef.current?.seekTo(0, true);
+      playerRef.current?.playVideo();
+      return;
+    }
+
+    let newIndex: number;
+    
+    if (isShuffledRef.current && shuffledIndicesRef.current.length > 0) {
+      const currentShuffledPos = shuffledIndicesRef.current.indexOf(currentIndexRef.current);
+      const nextShuffledPos = (currentShuffledPos + 1) % shuffledIndicesRef.current.length;
+      newIndex = shuffledIndicesRef.current[nextShuffledPos];
+    } else {
+      newIndex = (currentIndexRef.current + 1) % songs.length;
+    }
+
+    // Handle repeat all or stop at end
+    if (repeatModeRef.current === 'off' && newIndex === 0 && !isShuffledRef.current) {
+      setIsPlaying(false);
+      return;
+    }
+
     currentIndexRef.current = newIndex;
     setCurrentSongIndex(newIndex);
+    setCurrentTime(0);
+    setDuration(0);
     playerRef.current?.loadVideoById(songs[newIndex].id);
   }, []);
 
@@ -191,28 +261,104 @@ const MusicSection = () => {
     };
   }, [playNextSong]);
 
-  const togglePlay = () => {
+  const togglePlay = useCallback(() => {
     if (!isReady) return;
     isPlaying ? playerRef.current?.pauseVideo() : playerRef.current?.playVideo();
-  };
+  }, [isReady, isPlaying]);
 
-  const nextSong = () => {
-    const newIndex = (currentIndexRef.current + 1) % songs.length;
+  const nextSong = useCallback(() => {
+    let newIndex: number;
+    
+    if (isShuffled && shuffledIndices.length > 0) {
+      const currentShuffledPos = shuffledIndices.indexOf(currentSongIndex);
+      const nextShuffledPos = (currentShuffledPos + 1) % shuffledIndices.length;
+      newIndex = shuffledIndices[nextShuffledPos];
+    } else {
+      newIndex = (currentSongIndex + 1) % songs.length;
+    }
+
     currentIndexRef.current = newIndex;
     setCurrentSongIndex(newIndex);
+    setCurrentTime(0);
+    setDuration(0);
     playerRef.current?.loadVideoById(songs[newIndex].id);
-  };
+  }, [isShuffled, shuffledIndices, currentSongIndex]);
 
-  const prevSong = () => {
-    const newIndex = (currentIndexRef.current - 1 + songs.length) % songs.length;
+  const prevSong = useCallback(() => {
+    let newIndex: number;
+    
+    if (isShuffled && shuffledIndices.length > 0) {
+      const currentShuffledPos = shuffledIndices.indexOf(currentSongIndex);
+      const prevShuffledPos = (currentShuffledPos - 1 + shuffledIndices.length) % shuffledIndices.length;
+      newIndex = shuffledIndices[prevShuffledPos];
+    } else {
+      newIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+    }
+
     currentIndexRef.current = newIndex;
     setCurrentSongIndex(newIndex);
+    setCurrentTime(0);
+    setDuration(0);
     playerRef.current?.loadVideoById(songs[newIndex].id);
-  };
+  }, [isShuffled, shuffledIndices, currentSongIndex]);
+
+  const adjustVolume = useCallback((delta: number) => {
+    const newVolume = Math.max(0, Math.min(100, volume + delta));
+    setVolume(newVolume);
+    setIsMuted(newVolume === 0);
+    playerRef.current?.setVolume(newVolume);
+  }, [volume]);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is typing in an input
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+      switch (e.key.toLowerCase()) {
+        case ' ':
+          e.preventDefault();
+          togglePlay();
+          break;
+        case 'arrowright':
+          if (e.shiftKey) {
+            nextSong();
+          }
+          break;
+        case 'arrowleft':
+          if (e.shiftKey) {
+            prevSong();
+          }
+          break;
+        case 'arrowup':
+          e.preventDefault();
+          adjustVolume(10);
+          break;
+        case 'arrowdown':
+          e.preventDefault();
+          adjustVolume(-10);
+          break;
+        case 'm':
+          toggleMute();
+          break;
+        case 's':
+          toggleShuffle();
+          break;
+        case 'r':
+          toggleRepeat();
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [togglePlay, nextSong, prevSong, adjustVolume]);
 
   const selectSong = (index: number) => {
     currentIndexRef.current = index;
     setCurrentSongIndex(index);
+    setCurrentTime(0);
+    setDuration(0);
     playerRef.current?.loadVideoById(songs[index].id);
     setShowPlaylist(false);
   };
@@ -324,16 +470,33 @@ const MusicSection = () => {
                   className="mt-6 flex items-center justify-between"
                   style={{ transform: "translateZ(10px)" }}
                 >
-                  {/* Playlist Button */}
-                  <button
-                    onClick={() => setShowPlaylist(true)}
-                    className="p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-200 group"
-                    style={{
-                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
-                    }}
-                  >
-                    <List className="w-5 h-5 text-white/60 group-hover:text-white transition-colors" />
-                  </button>
+                  {/* Left Controls - Shuffle & Playlist */}
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={toggleShuffle}
+                      className={`p-3 rounded-lg transition-all duration-200 group ${
+                        isShuffled ? 'bg-white/20' : 'bg-white/5 hover:bg-white/10'
+                      }`}
+                      style={{
+                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                      }}
+                      title="Shuffle (S)"
+                    >
+                      <Shuffle className={`w-4 h-4 transition-colors ${
+                        isShuffled ? 'text-white' : 'text-white/60 group-hover:text-white'
+                      }`} />
+                    </button>
+                    <button
+                      onClick={() => setShowPlaylist(true)}
+                      className="p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-200 group"
+                      style={{
+                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                      }}
+                      title="Playlist"
+                    >
+                      <List className="w-4 h-4 text-white/60 group-hover:text-white transition-colors" />
+                    </button>
+                  </div>
 
                   {/* Main Controls */}
                   <div className="flex items-center gap-4">
@@ -371,26 +534,47 @@ const MusicSection = () => {
                     </button>
                   </div>
 
-                  {/* Volume Control */}
-                  <div className="flex items-center gap-2 w-32">
+                  {/* Right Controls - Repeat & Volume */}
+                  <div className="flex items-center gap-2">
                     <button
-                      onClick={toggleMute}
-                      className="p-2 text-white/50 hover:text-white transition-colors"
+                      onClick={toggleRepeat}
+                      className={`p-3 rounded-lg transition-all duration-200 group ${
+                        repeatMode !== 'off' ? 'bg-white/20' : 'bg-white/5 hover:bg-white/10'
+                      }`}
+                      style={{
+                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                      }}
+                      title={`Repeat: ${repeatMode} (R)`}
                     >
-                      {isMuted || volume === 0 ? (
-                        <VolumeX className="w-4 h-4" />
+                      {repeatMode === 'one' ? (
+                        <Repeat1 className="w-4 h-4 text-white" />
                       ) : (
-                        <Volume2 className="w-4 h-4" />
+                        <Repeat className={`w-4 h-4 transition-colors ${
+                          repeatMode === 'all' ? 'text-white' : 'text-white/60 group-hover:text-white'
+                        }`} />
                       )}
                     </button>
-                    <Slider
-                      value={[volume]}
-                      min={0}
-                      max={100}
-                      step={1}
-                      onValueChange={handleVolumeChange}
-                      className="flex-1 cursor-pointer [&>span:first-child]:h-1 [&>span:first-child]:bg-white/20 [&_[role=slider]]:h-3 [&_[role=slider]]:w-3 [&_[role=slider]]:border-0 [&_[role=slider]]:bg-white [&>span:first-child>span]:bg-white"
-                    />
+                    <div className="flex items-center gap-1 w-28">
+                      <button
+                        onClick={toggleMute}
+                        className="p-2 text-white/50 hover:text-white transition-colors"
+                        title="Mute (M)"
+                      >
+                        {isMuted || volume === 0 ? (
+                          <VolumeX className="w-4 h-4" />
+                        ) : (
+                          <Volume2 className="w-4 h-4" />
+                        )}
+                      </button>
+                      <Slider
+                        value={[volume]}
+                        min={0}
+                        max={100}
+                        step={1}
+                        onValueChange={handleVolumeChange}
+                        className="flex-1 cursor-pointer [&>span:first-child]:h-1 [&>span:first-child]:bg-white/20 [&_[role=slider]]:h-3 [&_[role=slider]]:w-3 [&_[role=slider]]:border-0 [&_[role=slider]]:bg-white [&>span:first-child>span]:bg-white"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
