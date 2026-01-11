@@ -20,6 +20,17 @@ const songs = [
   { id: "xlYptBV0ko4", title: "Cosmic Drift", artist: "SHNWAZX" },
   { id: "j9_aK9WtjJU", title: "After Hours", artist: "SHNWAZX" },
   { id: "MHCsrKA9gh8", title: "Final Chapter", artist: "SHNWAZX" },
+  { id: "Vwdpifdr7wU", title: "Ethereal Dawn", artist: "SHNWAZX" },
+  { id: "sKJvJCsey84", title: "Phantom Lights", artist: "SHNWAZX" },
+  { id: "Y8u4kRdNmCY", title: "Solar Flare", artist: "SHNWAZX" },
+  { id: "riVOHkYvzjI", title: "Night Rider", artist: "SHNWAZX" },
+  { id: "crzefGL1dKs", title: "Echo Chamber", artist: "SHNWAZX" },
+  { id: "9UDkYz64ehA", title: "Gravity Pull", artist: "SHNWAZX" },
+  { id: "3brVA5w-aLQ", title: "Neon Streets", artist: "SHNWAZX" },
+  { id: "8XDU2uzPseQ", title: "Distant Memory", artist: "SHNWAZX" },
+  { id: "-YlmnPh-6rE", title: "City Lights", artist: "SHNWAZX" },
+  { id: "pytdWKT-NV4", title: "Twilight Zone", artist: "SHNWAZX" },
+  { id: "cx3yqtmxhnQ", title: "Beyond Horizon", artist: "SHNWAZX" },
 ];
 
 const getThumbnail = (videoId: string) => `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
@@ -67,6 +78,8 @@ type RepeatMode = 'off' | 'all' | 'one';
 const MusicSection = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const [previousSongIndex, setPreviousSongIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const [showPlaylist, setShowPlaylist] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [waveformKey, setWaveformKey] = useState(0);
@@ -86,6 +99,22 @@ const MusicSection = () => {
   const isShuffledRef = useRef(false);
   const repeatModeRef = useRef<RepeatMode>('off');
   const shuffledIndicesRef = useRef<number[]>([]);
+
+  // Handle song transition animation
+  const handleSongChange = useCallback((newIndex: number) => {
+    setPreviousSongIndex(currentSongIndex);
+    setIsTransitioning(true);
+    currentIndexRef.current = newIndex;
+    setCurrentSongIndex(newIndex);
+    setCurrentTime(0);
+    setDuration(0);
+    playerRef.current?.loadVideoById(songs[newIndex].id);
+    
+    // Reset transition after animation
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 500);
+  }, [currentSongIndex]);
 
   // Keep refs in sync with state
   useEffect(() => {
@@ -206,11 +235,15 @@ const MusicSection = () => {
       return;
     }
 
+    setPreviousSongIndex(currentIndexRef.current);
+    setIsTransitioning(true);
     currentIndexRef.current = newIndex;
     setCurrentSongIndex(newIndex);
     setCurrentTime(0);
     setDuration(0);
     playerRef.current?.loadVideoById(songs[newIndex].id);
+    
+    setTimeout(() => setIsTransitioning(false), 500);
   }, []);
 
   useEffect(() => {
@@ -279,12 +312,8 @@ const MusicSection = () => {
       newIndex = (currentSongIndex + 1) % songs.length;
     }
 
-    currentIndexRef.current = newIndex;
-    setCurrentSongIndex(newIndex);
-    setCurrentTime(0);
-    setDuration(0);
-    playerRef.current?.loadVideoById(songs[newIndex].id);
-  }, [isShuffled, shuffledIndices, currentSongIndex]);
+    handleSongChange(newIndex);
+  }, [isShuffled, shuffledIndices, currentSongIndex, handleSongChange]);
 
   const prevSong = useCallback(() => {
     let newIndex: number;
@@ -297,12 +326,8 @@ const MusicSection = () => {
       newIndex = (currentSongIndex - 1 + songs.length) % songs.length;
     }
 
-    currentIndexRef.current = newIndex;
-    setCurrentSongIndex(newIndex);
-    setCurrentTime(0);
-    setDuration(0);
-    playerRef.current?.loadVideoById(songs[newIndex].id);
-  }, [isShuffled, shuffledIndices, currentSongIndex]);
+    handleSongChange(newIndex);
+  }, [isShuffled, shuffledIndices, currentSongIndex, handleSongChange]);
 
   const adjustVolume = useCallback((delta: number) => {
     const newVolume = Math.max(0, Math.min(100, volume + delta));
@@ -357,11 +382,7 @@ const MusicSection = () => {
   }, [togglePlay, nextSong, prevSong, adjustVolume]);
 
   const selectSong = (index: number) => {
-    currentIndexRef.current = index;
-    setCurrentSongIndex(index);
-    setCurrentTime(0);
-    setDuration(0);
-    playerRef.current?.loadVideoById(songs[index].id);
+    handleSongChange(index);
     setShowPlaylist(false);
   };
 
@@ -415,12 +436,27 @@ const MusicSection = () => {
                     transform: "translateZ(5px)",
                   }}
                 >
-                  {/* Album Art with Waveform Overlay */}
+                  {/* Album Art with Smooth Transitions */}
                   <div className="relative aspect-[16/9] overflow-hidden">
+                    {/* Previous artwork (fading out) */}
+                    {isTransitioning && (
+                      <img
+                        src={getThumbnail(songs[previousSongIndex].id)}
+                        alt={songs[previousSongIndex].title}
+                        className="absolute inset-0 w-full h-full object-cover opacity-40 transition-opacity duration-500 ease-out"
+                        style={{ opacity: 0 }}
+                      />
+                    )}
+                    
+                    {/* Current artwork with fade-in and scale effect */}
                     <img
                       src={getThumbnail(songs[currentSongIndex].id)}
                       alt={songs[currentSongIndex].title}
-                      className="w-full h-full object-cover opacity-40"
+                      className={`w-full h-full object-cover transition-all duration-500 ease-out ${
+                        isTransitioning 
+                          ? 'opacity-0 scale-105' 
+                          : 'opacity-60 scale-100'
+                      }`}
                     />
                     
                     {/* Simple Visualizer Overlay */}
@@ -428,10 +464,12 @@ const MusicSection = () => {
                       <SimpleVisualizer isPlaying={isPlaying} />
                     </div>
 
-                    {/* Song Info Overlay */}
+                    {/* Song Info Overlay with slide-up animation */}
                     <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
                       <div className="flex items-end justify-between">
-                        <div>
+                        <div className={`transition-all duration-500 ease-out ${
+                          isTransitioning ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
+                        }`}>
                           <h3 className="text-white font-medium text-lg tracking-wide">
                             {songs[currentSongIndex].title}
                           </h3>
@@ -439,7 +477,9 @@ const MusicSection = () => {
                             {songs[currentSongIndex].artist}
                           </p>
                         </div>
-                        <div className="text-white/40 text-xs font-mono">
+                        <div className={`text-white/40 text-xs font-mono transition-all duration-500 ${
+                          isTransitioning ? 'opacity-0' : 'opacity-100'
+                        }`}>
                           {String(currentSongIndex + 1).padStart(2, '0')} / {songs.length}
                         </div>
                       </div>
