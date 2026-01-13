@@ -68,6 +68,75 @@ document.addEventListener("keydown", (e) => {
     console.log("%c🚫 Inspect disabled! GO TO HELL 🔥", "color: #e11d48; font-size: 14px;");
     return false;
   }
+  // Print Screen detection - show watermark
+  if (e.key === "PrintScreen") {
+    e.preventDefault();
+    showScreenshotWatermark();
+    console.log("%c📸 Screenshot detected! GO TO HELL 🔥", "color: #e11d48; font-size: 14px;");
+    return false;
+  }
+});
+
+// Create and show screenshot watermark overlay
+const createWatermarkOverlay = () => {
+  const overlay = document.createElement("div");
+  overlay.id = "screenshot-watermark";
+  overlay.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 10, 10, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.1s ease;
+  `;
+  
+  overlay.innerHTML = `
+    <div style="text-align: center; color: #e11d48;">
+      <div style="font-size: 72px; font-weight: bold; text-shadow: 0 0 30px rgba(225, 29, 72, 0.5);">🔥 GO TO HELL 🔥</div>
+      <div style="font-size: 32px; margin-top: 20px; color: white;">PROTECTED BY SHNWAZX</div>
+      <div style="font-size: 18px; margin-top: 10px; color: #888;">Screenshots are not allowed! 📸🚫</div>
+    </div>
+  `;
+  
+  document.body.appendChild(overlay);
+  return overlay;
+};
+
+let watermarkOverlay: HTMLElement | null = null;
+
+const showScreenshotWatermark = () => {
+  if (!watermarkOverlay) {
+    watermarkOverlay = createWatermarkOverlay();
+  }
+  watermarkOverlay.style.opacity = "1";
+  watermarkOverlay.style.pointerEvents = "all";
+  
+  setTimeout(() => {
+    if (watermarkOverlay) {
+      watermarkOverlay.style.opacity = "0";
+      watermarkOverlay.style.pointerEvents = "none";
+    }
+  }, 2000);
+};
+
+// Detect visibility change (potential screenshot on mobile)
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    showScreenshotWatermark();
+  }
+});
+
+// Detect window blur (potential screenshot tool)
+window.addEventListener("blur", () => {
+  showScreenshotWatermark();
 });
 
 // Detect DevTools opening
