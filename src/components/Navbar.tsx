@@ -44,13 +44,6 @@ const Navbar = () => {
 
           {/* Desktop Social Links */}
           <div className="hidden md:flex items-center gap-3 lg:gap-4">
-            <Link
-              to="/install"
-              className="text-muted-foreground hover:text-primary transition-colors duration-300"
-              aria-label="Install App"
-            >
-              <Download size={18} />
-            </Link>
             {socialLinks.map((social) => (
               <a
                 key={social.label}
@@ -91,14 +84,6 @@ const Navbar = () => {
               ))}
             </div>
             <div className="flex items-center gap-4 mt-4 pt-4 border-t border-border">
-              <Link
-                to="/install"
-                onClick={() => setIsOpen(false)}
-                className="text-muted-foreground hover:text-primary transition-colors duration-300"
-                aria-label="Install App"
-              >
-                <Download size={20} />
-              </Link>
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
