@@ -1,73 +1,102 @@
-# Welcome to your Lovable project
+<p align="center">
+  <img src="public/favicon.png" alt="SHNWAZX Logo" width="120" height="120" />
+</p>
 
-## Project info
+<h1 align="center">🔥 SHNWAZX Portfolio 🔥</h1>
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+<p align="center">
+  <strong>Creative Developer • Music Producer • Digital Artist</strong>
+</p>
 
-## How can I edit this code?
+<p align="center">
+  <a href="https://instagram.com/shnwazxc"><img src="https://img.shields.io/badge/Instagram-%23E4405F.svg?style=for-the-badge&logo=Instagram&logoColor=white" alt="Instagram" /></a>
+  <a href="https://github.com/SHNWAZX"><img src="https://img.shields.io/badge/GitHub-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
+  <a href="https://www.youtube.com/@SHNWAZXC"><img src="https://img.shields.io/badge/YouTube-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white" alt="YouTube" /></a>
+  <a href="https://t.me/SHNWAZX"><img src="https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram" /></a>
+</p>
 
-There are several ways of editing your application.
+<p align="center">
+  <img src="https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" alt="Tailwind" />
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white" alt="Supabase" />
+</p>
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## ⚡ About
 
-Changes made via Lovable will be committed automatically to this repo.
+A sleek, modern portfolio website showcasing my work as a creative developer, music producer, and digital artist. Built with cutting-edge web technologies and designed with a bold, dark aesthetic.
 
-**Use your preferred IDE**
+## 🛠️ Tech Stack
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+| Category | Technologies |
+|----------|-------------|
+| **Frontend** | React, TypeScript, Tailwind CSS |
+| **Build Tool** | Vite |
+| **UI Components** | shadcn/ui, Radix UI |
+| **Backend** | Supabase (Database, Auth, Storage) |
+| **Styling** | Custom design system with CSS variables |
+| **Fonts** | Bebas Neue, Inter |
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## ✨ Features
 
-Follow these steps:
+- 🎨 **Bold Dark Theme** - Eye-catching design with red accent colors
+- 📱 **PWA Support** - Install as a native app on any device
+- 🔒 **Source Protection** - Anti-inspect and copy protection measures
+- 🎵 **Music Showcase** - Integrated music player section
+- 💼 **Portfolio Gallery** - Dynamic project showcase
+- 📧 **Contact Form** - Easy way to get in touch
+- 🚀 **Smooth Animations** - Scroll-based animations and transitions
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+## 🚀 Quick Start
+
+```bash
+# Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
+# Navigate to project directory
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## 📁 Project Structure
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```
+src/
+├── components/     # Reusable UI components
+├── pages/          # Page components
+├── hooks/          # Custom React hooks
+├── assets/         # Images and static files
+├── lib/            # Utility functions
+└── integrations/   # Supabase client setup
+```
 
-**Use GitHub Codespaces**
+## 🔐 Security Features
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+This portfolio includes several protection measures:
+- Right-click disabled
+- Keyboard shortcuts blocked (F12, Ctrl+U, etc.)
+- Text selection disabled
+- DevTools detection
+- Console warnings for curious developers 😈
 
-## What technologies are used for this project?
+## 📜 License
 
-This project is built with:
+© 2024 SHNWAZX. All rights reserved.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
-## How can I deploy this project?
+<p align="center">
+  <strong>🔥 GO TO HELL if you try to steal this code 🔥</strong>
+</p>
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+<p align="center">
+  Made with ❤️ by <a href="https://github.com/SHNWAZX">SHNWAZX</a>
+</p>
