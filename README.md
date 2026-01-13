@@ -2,7 +2,7 @@
   <img src="public/favicon.png" alt="SHNWAZX Logo" width="120" height="120" />
 </p>
 
-<h1 align="center">🔥 SHNWAZX Portfolio 🔥</h1>
+<h1 align="center">  SHNWAZX Portfolio  </h1>
 
 <p align="center">
   <strong>Creative Developer • Music Producer • Digital Artist</strong>
