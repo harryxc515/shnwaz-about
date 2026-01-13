@@ -18,6 +18,24 @@ document.addEventListener("contextmenu", (e) => {
   console.log("%c🚫 Right-click disabled!", "color: #e11d48; font-size: 14px;");
 });
 
+// Disable text selection and copying
+document.addEventListener("selectstart", (e) => {
+  e.preventDefault();
+  return false;
+});
+
+document.addEventListener("copy", (e) => {
+  e.preventDefault();
+  console.log("%c🚫 Copying disabled! GO TO HELL 🔥", "color: #e11d48; font-size: 14px;");
+  return false;
+});
+
+// Disable drag
+document.addEventListener("dragstart", (e) => {
+  e.preventDefault();
+  return false;
+});
+
 // Disable keyboard shortcuts (Ctrl+U, F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C)
 document.addEventListener("keydown", (e) => {
   // F12
