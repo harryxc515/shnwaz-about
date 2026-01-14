@@ -1,6 +1,5 @@
-import { Instagram, Github, Youtube, Send, Menu, X, Shield } from "lucide-react";
+import { Instagram, Github, Youtube, Send, Menu, X } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +17,7 @@ const Navbar = () => {
     { icon: Instagram, href: "https://instagram.com/shnwazxc", label: "Instagram" },
     { icon: Github, href: "https://github.com/SHNWAZX", label: "GitHub" },
     { icon: Youtube, href: "https://www.youtube.com/@SHNWAZXC", label: "YouTube" },
-    { icon: Send, href: "https://t.me/SHNWAZX", label: "Telegram" },
+    { icon: Send, href: "https://t.me/AuraRaree", label: "Telegram" },
   ];
 
   return (
@@ -56,13 +55,6 @@ const Navbar = () => {
                 <social.icon size={18} />
               </a>
             ))}
-            <Link
-              to="/auth"
-              className="text-muted-foreground hover:text-primary transition-colors duration-300"
-              aria-label="Admin"
-            >
-              <Shield size={18} />
-            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -103,13 +95,6 @@ const Navbar = () => {
                   <social.icon size={20} />
                 </a>
               ))}
-              <Link
-                to="/auth"
-                className="text-muted-foreground hover:text-primary transition-colors duration-300"
-                aria-label="Admin"
-              >
-                <Shield size={20} />
-              </Link>
             </div>
           </div>
         )}
