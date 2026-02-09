@@ -19,7 +19,8 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ project, onSelect, onImageClick }: ProjectCardProps) => {
   return (
-    <div className="group bg-card rounded-xl overflow-hidden border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
+    <div className="group relative bg-card rounded-xl overflow-hidden border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
+      <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
       {project.image_url && (
         <div
           className="aspect-video overflow-hidden relative cursor-zoom-in"
