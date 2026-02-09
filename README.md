@@ -1,11 +1,13 @@
 <p align="center">
-  <img src="public/favicon.png" alt="SHNWAZX Logo" width="120" height="120" />
+  <img src="public/favicon.png" alt="SHNWAZX Logo" width="140" height="140" style="border-radius: 50%;" />
 </p>
 
-<h1 align="center">  SHNWAZX Portfolio  </h1>
+<h1 align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Bebas+Neue&size=50&pause=1000&color=E04050&center=true&vCenter=true&width=600&lines=SHNWAZX+PORTFOLIO;Creative+Developer;Music+Producer;Digital+Artist" alt="Typing SVG" />
+</h1>
 
 <p align="center">
-  <strong>Creative Developer • Music Producer • Digital Artist</strong>
+  <a href="https://shnwaz-about.lovable.app"><img src="https://img.shields.io/badge/🌐_Live_Site-shnwaz--about.lovable.app-E04050?style=for-the-badge" alt="Live Site" /></a>
 </p>
 
 <p align="center">
@@ -15,77 +17,143 @@
   <a href="https://t.me/SHNWAZX"><img src="https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram" /></a>
 </p>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB" alt="React" />
-  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" alt="Tailwind" />
-  <img src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite" />
-  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white" alt="Supabase" />
-</p>
+<br/>
+
+<div align="center">
+
+```
+  ███████╗██╗  ██╗███╗   ██╗██╗    ██╗ █████╗ ███████╗██╗  ██╗
+  ██╔════╝██║  ██║████╗  ██║██║    ██║██╔══██╗╚══███╔╝╚██╗██╔╝
+  ███████╗███████║██╔██╗ ██║██║ █╗ ██║███████║  ███╔╝  ╚███╔╝
+  ╚════██║██╔══██║██║╚██╗██║██║███╗██║██╔══██║ ███╔╝   ██╔██╗
+  ███████║██║  ██║██║ ╚████║╚███╔███╔╝██║  ██║███████╗██╔╝ ██╗
+  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
+```
+
+</div>
 
 ---
 
-## ⚡ About
+<br/>
 
-A sleek, modern portfolio website showcasing my work as a creative developer, music producer, and digital artist. Built with cutting-edge web technologies and designed with a bold, dark aesthetic.
+## 🔮 Overview
+
+> A **bold, immersive** portfolio experience built with modern web technologies. Featuring a dark cinematic aesthetic, 3D hover effects, and a dynamic project showcase powered by a real-time backend.
+
+<br/>
+
+## 🎯 Highlights
+
+<table>
+<tr>
+<td width="50%">
+
+### 🖤 Dark Cinematic UI
+Custom design system with deep blacks, crimson accents, and glowing hover states. No templates — every pixel is intentional.
+
+</td>
+<td width="50%">
+
+### ⚡ 3D Interactive Cards
+Project cards respond to cursor movement with perspective tilt, shimmer overlays, and smooth zoom transitions.
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🎵 Music Integration
+Built-in music showcase section for beats and productions — because code isn't the only thing I create.
+
+</td>
+<td width="50%">
+
+### 🔒 Source Protection
+Anti-inspect, disabled right-click, blocked DevTools shortcuts, and console traps for the curious.
+
+</td>
+</tr>
+</table>
+
+<br/>
 
 ## 🛠️ Tech Stack
 
-| Category | Technologies |
-|----------|-------------|
-| **Frontend** | React, TypeScript, Tailwind CSS |
-| **Build Tool** | Vite |
-| **UI Components** | shadcn/ui, Radix UI |
-| **Backend** | Supabase (Database, Auth, Storage) |
-| **Styling** | Custom design system with CSS variables |
-| **Fonts** | Bebas Neue, Inter |
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=react,typescript,tailwind,vite,supabase&theme=dark" alt="Tech Stack" />
+</p>
+
+| Layer | Tech |
+|:------|:-----|
+| **Framework** | React 18 + TypeScript |
+| **Styling** | Tailwind CSS + Custom Design Tokens (HSL) |
+| **Components** | shadcn/ui · Radix UI Primitives |
+| **Backend** | Lovable Cloud (Database · Auth · Storage · Edge Functions) |
+| **Build** | Vite · PWA Plugin |
+| **Typography** | Bebas Neue · Inter |
+| **Animations** | CSS Keyframes · Scroll-triggered transitions · 3D Perspective |
+
+<br/>
 
 ## ✨ Features
 
-- 🎨 **Bold Dark Theme** - Eye-catching design with red accent colors
-- 📱 **PWA Support** - Install as a native app on any device
-- 🔒 **Source Protection** - Anti-inspect and copy protection measures
-- 🎵 **Music Showcase** - Integrated music player section
-- 💼 **Portfolio Gallery** - Dynamic project showcase
-- 📧 **Contact Form** - Easy way to get in touch
-- 🚀 **Smooth Animations** - Scroll-based animations and transitions
-
-## 🚀 Quick Start
-
-```bash
-# Clone the repository
-git clone <YOUR_GIT_URL>
-
-# Navigate to project directory
-cd <YOUR_PROJECT_NAME>
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
+```
+ ╭──────────────────────────────────────────────────────╮
+ │  🎨  Bold dark theme with crimson accents            │
+ │  📱  PWA — installable on any device                 │
+ │  🖼️  Image lightbox with zoom controls               │
+ │  🃏  3D tilt + shimmer hover on project cards        │
+ │  🎵  Music showcase section                          │
+ │  💼  Dynamic portfolio from database                 │
+ │  📸  Auto-captured & permanently stored screenshots  │
+ │  📧  Contact form                                    │
+ │  🚀  Scroll-based reveal animations                  │
+ │  🔐  Anti-inspect source protection                  │
+ ╰──────────────────────────────────────────────────────╯
 ```
 
-## 📁 Project Structure
+<br/>
+
+## 📂 Project Structure
 
 ```
 src/
-├── components/     # Reusable UI components
-├── pages/          # Page components
-├── hooks/          # Custom React hooks
-├── assets/         # Images and static files
-├── lib/            # Utility functions
-└── integrations/   # Supabase client setup
+├── components/
+│   ├── portfolio/        # ProjectCard, ImageLightbox, DetailModal
+│   ├── ui/               # shadcn/ui components
+│   ├── HeroSection.tsx
+│   ├── AboutSection.tsx
+│   ├── PortfolioSection.tsx
+│   ├── MusicSection.tsx
+│   ├── ServicesSection.tsx
+│   ├── SkillsSection.tsx
+│   ├── ContactSection.tsx
+│   ├── Navbar.tsx
+│   └── Footer.tsx
+├── hooks/                # useParallax, useScrollAnimation, useAuth
+├── pages/                # Index, NotFound
+├── assets/               # Images & media
+├── integrations/         # Backend client & types
+└── lib/                  # Utilities
 ```
 
-## 🔐 Security Features
+<br/>
 
-This portfolio includes several protection measures:
-- Right-click disabled
-- Keyboard shortcuts blocked (F12, Ctrl+U, etc.)
-- Text selection disabled
-- DevTools detection
-- Console warnings for curious developers 😈
+## 🚀 Getting Started
+
+```bash
+# Clone
+git clone <YOUR_GIT_URL>
+cd <YOUR_PROJECT_NAME>
+
+# Install & Run
+npm install
+npm run dev
+```
+
+Open **http://localhost:5173** and you're live.
+
+<br/>
 
 ## 📜 License
 
@@ -94,9 +162,13 @@ This portfolio includes several protection measures:
 ---
 
 <p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=E04050&height=80&section=footer" width="100%" />
+</p>
+
+<p align="center">
   <strong>🔥 GO TO HELL if you try to steal this code 🔥</strong>
 </p>
 
 <p align="center">
-  Made with ❤️ by <a href="https://github.com/SHNWAZX">SHNWAZX</a>
+  Built with 🩸 by <a href="https://github.com/SHNWAZX"><strong>SHNWAZX</strong></a>
 </p>
