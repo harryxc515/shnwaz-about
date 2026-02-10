@@ -11,6 +11,12 @@
 </p>
 
 <p align="center">
+  <img src="https://komarev.com/ghpvc/?username=SHNWAZX&label=Profile+Views&color=E04050&style=flat-square" alt="Profile Views" />
+  <img src="https://img.shields.io/github/stars/SHNWAZX?style=flat-square&color=E04050" alt="Stars" />
+  <img src="https://img.shields.io/github/followers/SHNWAZX?style=flat-square&color=E04050" alt="Followers" />
+</p>
+
+<p align="center">
   <a href="https://instagram.com/shnwazxc"><img src="https://img.shields.io/badge/Instagram-%23E4405F.svg?style=for-the-badge&logo=Instagram&logoColor=white" alt="Instagram" /></a>
   <a href="https://github.com/SHNWAZX"><img src="https://img.shields.io/badge/GitHub-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
   <a href="https://www.youtube.com/@SHNWAZXC"><img src="https://img.shields.io/badge/YouTube-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white" alt="YouTube" /></a>
@@ -33,6 +39,23 @@
 </div>
 
 ---
+
+<br/>
+
+## 📊 GitHub Stats
+
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=SHNWAZX&show_icons=true&theme=radical&hide_border=true&bg_color=0a0a0a&title_color=E04050&icon_color=E04050&text_color=f0f0f0" alt="GitHub Stats" width="48%" />
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=SHNWAZX&theme=radical&hide_border=true&background=0a0a0a&ring=E04050&fire=E04050&currStreakLabel=E04050" alt="GitHub Streak" width="48%" />
+</p>
+
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=SHNWAZX&layout=compact&theme=radical&hide_border=true&bg_color=0a0a0a&title_color=E04050&text_color=f0f0f0" alt="Top Languages" width="40%" />
+</p>
+
+<p align="center">
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=SHNWAZX&theme=redical&hide_border=true&bg_color=0a0a0a&color=E04050&line=E04050&point=ffffff" alt="Activity Graph" width="90%" />
+</p>
 
 <br/>
 
@@ -111,6 +134,14 @@ Anti-inspect, disabled right-click, blocked DevTools shortcuts, and console trap
  │  🔐  Anti-inspect source protection                  │
  ╰──────────────────────────────────────────────────────╯
 ```
+
+<br/>
+
+## 🏆 Trophies
+
+<p align="center">
+  <img src="https://github-profile-trophy.vercel.app/?username=SHNWAZX&theme=radical&no-frame=true&no-bg=true&column=7&margin-w=10" alt="Trophies" />
+</p>
 
 <br/>
 
