@@ -57,6 +57,11 @@
 
   html {
     scroll-behavior: smooth;
+    cursor: none;
+  }
+
+  a, button, input, textarea, select {
+    cursor: none;
   }
 
   body {
