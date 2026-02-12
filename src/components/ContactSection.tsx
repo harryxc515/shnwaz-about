@@ -1,8 +1,11 @@
-import { Instagram, Github, Youtube, Send, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { Instagram, Github, Youtube, Send, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
 import ScrollAnimationWrapper from "./ScrollAnimationWrapper";
 import ParallaxWrapper from "./ParallaxWrapper";
 
 const ContactSection = () => {
+  const [showSocials, setShowSocials] = useState(false);
+
   const socialLinks = [
     { icon: Instagram, href: "https://instagram.com/shnwazxc", label: "Instagram", username: "@shnwazxc" },
     { icon: Github, href: "https://github.com/SHNWAZX", label: "GitHub", username: "SHNWAZX" },
@@ -57,17 +60,37 @@ const ContactSection = () => {
 
           <ParallaxWrapper speed={0.12} direction="up" className="flex-1 w-full max-w-md lg:max-w-none">
             <ScrollAnimationWrapper animation="fade-right" delay={200}>
-              <div className="bg-card p-6 md:p-8 rounded-2xl border border-border">
+              <div className="bg-card/60 backdrop-blur-xl p-6 md:p-8 rounded-2xl border border-border/50 shadow-[0_0_40px_-10px_hsl(var(--primary)/0.15)]">
                 <h3 className="text-xl md:text-2xl font-display text-foreground mb-4 md:mb-6">Connect With Me</h3>
                 
-                <div className="space-y-3 md:space-y-4">
-                  {socialLinks.map((social, index) => (
-                    <ScrollAnimationWrapper key={social.label} animation="fade-up" delay={300 + index * 100}>
+                <button
+                  onClick={() => setShowSocials(!showSocials)}
+                  className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary/10 border border-primary/30 text-primary font-body text-sm uppercase tracking-wider hover:bg-primary/20 transition-all duration-300 mb-4"
+                >
+                  {showSocials ? "Hide Social Links" : "Show Social Links"}
+                  {showSocials ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </button>
+
+                <div
+                  className="overflow-hidden transition-all duration-500 ease-in-out"
+                  style={{
+                    maxHeight: showSocials ? `${socialLinks.length * 80 + 20}px` : "0px",
+                    opacity: showSocials ? 1 : 0,
+                  }}
+                >
+                  <div className="space-y-3 md:space-y-4">
+                    {socialLinks.map((social, index) => (
                       <a
+                        key={social.label}
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-3 md:gap-4 p-3 md:p-4 bg-secondary rounded-xl hover:bg-primary/10 border border-transparent hover:border-primary transition-all duration-300 group"
+                        className="flex items-center gap-3 md:gap-4 p-3 md:p-4 bg-secondary/60 backdrop-blur-md rounded-xl hover:bg-primary/10 border border-border/40 hover:border-primary/50 transition-all duration-300 group"
+                        style={{
+                          transform: showSocials ? "translateY(0)" : "translateY(-12px)",
+                          opacity: showSocials ? 1 : 0,
+                          transition: `transform 0.4s ease-out ${index * 0.1}s, opacity 0.4s ease-out ${index * 0.1}s`,
+                        }}
                       >
                         <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary transition-colors duration-300 flex-shrink-0">
                           <social.icon size={20} className="text-primary group-hover:text-primary-foreground transition-colors" />
@@ -78,8 +101,8 @@ const ContactSection = () => {
                         </div>
                         <ArrowRight size={16} className="ml-auto text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0" />
                       </a>
-                    </ScrollAnimationWrapper>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
             </ScrollAnimationWrapper>
