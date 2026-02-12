@@ -8,7 +8,7 @@ import ImageLightbox from "./portfolio/ImageLightbox";
 const PortfolioSection = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState("All");
+  
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [lightbox, setLightbox] = useState<{ imageUrl: string; title: string } | null>(null);
 
@@ -30,12 +30,7 @@ const PortfolioSection = () => {
     fetchProjects();
   }, []);
 
-  const categories = ["All", ...new Set(projects.map((p) => p.category).filter(Boolean))];
-
-  const filteredProjects =
-    activeCategory === "All"
-      ? projects
-      : projects.filter((p) => p.category === activeCategory);
+  const filteredProjects = projects;
 
   const handleImageClick = (imageUrl: string, title: string) => {
     setLightbox({ imageUrl, title });
@@ -68,25 +63,6 @@ const PortfolioSection = () => {
             </div>
           </ScrollAnimationWrapper>
 
-          {categories.length > 1 && (
-            <ScrollAnimationWrapper delay={0.1}>
-              <div className="flex flex-wrap justify-center gap-3 mb-10">
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setActiveCategory(category as string)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                      activeCategory === category
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-secondary text-muted-foreground hover:bg-primary/20"
-                    }`}
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
-            </ScrollAnimationWrapper>
-          )}
 
           {filteredProjects.length === 0 ? (
             <ScrollAnimationWrapper delay={0.2}>
