@@ -1,14 +1,7 @@
-import { ArrowDown, Instagram, Github, Youtube, Send } from "lucide-react";
 import profileImage from "@/assets/profile.jpg";
 import ParallaxWrapper from "./ParallaxWrapper";
 
 const HeroSection = () => {
-  const socialLinks = [
-    { icon: Instagram, href: "https://instagram.com/shnwazxc", label: "Instagram", username: "@shnwazxc" },
-    { icon: Github, href: "https://github.com/SHNWAZX", label: "GitHub", username: "SHNWAZX" },
-    { icon: Youtube, href: "https://www.youtube.com/@SHNWAZXC", label: "YouTube", username: "@SHNWAZXC" },
-    { icon: Send, href: "https://t.me/SHNWAZX", label: "Telegram", username: "@SHNWAZX" },
-  ];
 
   return (
     <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 pb-12">
@@ -65,21 +58,6 @@ const HeroSection = () => {
               </div>
             </ParallaxWrapper>
 
-            {/* Social links */}
-            <div className="flex flex-wrap gap-4 md:gap-6 justify-center lg:justify-start">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300 group"
-                >
-                  <social.icon size={18} className="group-hover:scale-110 transition-transform" />
-                  <span className="text-xs md:text-sm font-body hidden sm:inline">{social.username}</span>
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* Right content - Profile Image */}
@@ -99,10 +77,6 @@ const HeroSection = () => {
           </ParallaxWrapper>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce hidden md:block">
-          <ArrowDown className="text-primary" size={24} />
-        </div>
       </div>
     </section>
   );
