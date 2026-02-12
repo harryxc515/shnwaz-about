@@ -1,4 +1,4 @@
-import { Instagram, Github, Youtube, Send, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
 const Navbar = () => {
@@ -13,12 +13,6 @@ const Navbar = () => {
     { name: "Contact", href: "#contact" },
   ];
 
-  const socialLinks = [
-    { icon: Instagram, href: "https://instagram.com/shnwazxc", label: "Instagram" },
-    { icon: Github, href: "https://github.com/SHNWAZX", label: "GitHub" },
-    { icon: Youtube, href: "https://www.youtube.com/@SHNWAZXC", label: "YouTube" },
-    { icon: Send, href: "https://t.me/AuraRaree", label: "Telegram" },
-  ];
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
@@ -41,21 +35,6 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Desktop Social Links */}
-          <div className="hidden md:flex items-center gap-3 lg:gap-4">
-            {socialLinks.map((social) => (
-              <a
-                key={social.label}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors duration-300"
-                aria-label={social.label}
-              >
-                <social.icon size={18} />
-              </a>
-            ))}
-          </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -79,20 +58,6 @@ const Navbar = () => {
                   className="text-sm uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors duration-300 py-2"
                 >
                   {link.name}
-                </a>
-              ))}
-            </div>
-            <div className="flex items-center gap-4 mt-4 pt-4 border-t border-border">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors duration-300"
-                  aria-label={social.label}
-                >
-                  <social.icon size={20} />
                 </a>
               ))}
             </div>
