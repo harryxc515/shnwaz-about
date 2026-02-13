@@ -41,17 +41,6 @@ const ContactSection = () => {
               </p>
             </ScrollAnimationWrapper>
 
-            <ScrollAnimationWrapper animation="fade-up" delay={300}>
-              <a
-                href="https://t.me/SHNWAZX"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-6 md:px-8 py-3 md:py-4 bg-primary text-primary-foreground font-body uppercase tracking-wider text-xs md:text-sm rounded hover:glow-primary-strong transition-all duration-300 group"
-              >
-                Contact Me
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </a>
-            </ScrollAnimationWrapper>
           </div>
 
           <ParallaxWrapper speed={0.12} direction="up" className="flex-1 w-full max-w-md lg:max-w-none">
@@ -66,7 +55,7 @@ const ContactSection = () => {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-3 md:gap-4 p-3 md:p-4 bg-secondary/60 backdrop-blur-md rounded-xl hover:bg-primary/10 border border-border/40 hover:border-primary/50 transition-all duration-300 group"
+                        className="flex items-center gap-3 md:gap-4 p-3 md:p-4 bg-secondary/60 backdrop-blur-md rounded-xl hover:bg-primary/10 border border-border/40 hover:border-primary/50 hover:shadow-[0_0_20px_-4px_hsl(var(--primary)/0.4)] transition-all duration-300 group"
                       >
                         <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary transition-colors duration-300 flex-shrink-0">
                           <social.icon size={20} className="text-primary group-hover:text-primary-foreground transition-colors" />
