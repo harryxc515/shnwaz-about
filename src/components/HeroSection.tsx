@@ -5,8 +5,9 @@ const HeroSection = () => {
 
   return (
     <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 pb-12">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/10" />
+      {/* Background grid pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-background/80 to-primary/10" />
       
       {/* Animated parallax circles */}
       <ParallaxWrapper speed={0.2} direction="up" className="absolute top-1/4 right-1/4">
@@ -30,7 +31,7 @@ const HeroSection = () => {
             </ParallaxWrapper>
             
             <ParallaxWrapper speed={0.15} direction="up">
-              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-display text-foreground leading-none mb-4 md:mb-6">
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-display text-foreground leading-none mb-4 md:mb-6 animate-text-shimmer bg-clip-text text-transparent bg-[linear-gradient(110deg,#fff,45%,#e11d48,55%,#fff)] bg-[length:200%_100%]">
                 SHNWAZX
               </h1>
             </ParallaxWrapper>

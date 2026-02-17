@@ -13,6 +13,9 @@ const AboutSection = () => {
 
   return (
     <section id="about" className="py-16 md:py-24 relative overflow-hidden">
+      {/* Background grid pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px]" />
+
       {/* Background parallax elements */}
       <ParallaxWrapper speed={0.15} direction="right" className="absolute top-20 left-10">
         <div className="w-40 h-40 bg-primary/5 rounded-full blur-3xl" />

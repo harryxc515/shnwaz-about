@@ -1,5 +1,6 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,10 +16,10 @@ const Navbar = () => {
 
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-white/5 supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 md:px-6 py-3 md:py-4">
         <div className="flex items-center justify-between">
-          <a href="#home" className="text-xl md:text-2xl font-display text-primary tracking-wider hidden">
+          <a href="#home" className="text-xl md:text-2xl font-display text-primary tracking-tighter hover:glow-primary transition-all duration-300">
             SHNWAZX
           </a>
 
@@ -28,9 +29,10 @@ const Navbar = () => {
               <a
                 key={link.name}
                 href={link.href}
-                className="text-xs lg:text-sm uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors duration-300"
+                className="group relative text-xs lg:text-sm uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors duration-300"
               >
                 {link.name}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
           </div>
@@ -47,22 +49,25 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="md:hidden py-4 border-t border-border mt-3">
-            <div className="flex flex-col gap-3">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className="text-sm uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors duration-300 py-2"
-                >
-                  {link.name}
-                </a>
-              ))}
-            </div>
+        <div
+          className={cn(
+            "md:hidden overflow-hidden transition-all duration-300 ease-in-out",
+            isOpen ? "max-h-[400px] opacity-100 border-t border-white/5 mt-3 py-4" : "max-h-0 opacity-0"
+          )}
+        >
+          <div className="flex flex-col gap-1">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className="text-xs uppercase tracking-widest text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all duration-300 py-3 px-4 rounded-lg"
+              >
+                {link.name}
+              </a>
+            ))}
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );

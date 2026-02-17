@@ -8,6 +8,7 @@ import ServicesSection from "@/components/ServicesSection";
 import PortfolioSection from "@/components/PortfolioSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import BackToTop from "@/components/BackToTop";
 
 const Index = () => {
   return (
@@ -24,6 +25,7 @@ const Index = () => {
         <ContactSection />
       </main>
       <Footer />
+      <BackToTop />
     </div>
   );
 };

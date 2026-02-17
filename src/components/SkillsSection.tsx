@@ -1,20 +1,41 @@
 import ScrollAnimationWrapper from "./ScrollAnimationWrapper";
 import ParallaxWrapper from "./ParallaxWrapper";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import {
+  Code2,
+  Layers,
+  Smartphone,
+  Globe,
+  Terminal,
+  Palette,
+  GitBranch,
+  Database,
+  Cpu,
+  MessageSquare,
+  Lightbulb,
+  FileCode2,
+  Blocks
+} from "lucide-react";
 
 interface Skill {
   name: string;
   level: number;
-  color?: string;
+  icon: any;
 }
 
 const SkillBar = ({ skill, delay }: { skill: Skill; delay: number }) => {
   const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 });
+  const Icon = skill.icon;
 
   return (
-    <div ref={ref} className="mb-6" style={{ transitionDelay: `${delay}ms` }}>
+    <div ref={ref} className="mb-6 group" style={{ transitionDelay: `${delay}ms` }}>
       <div className="flex justify-between items-center mb-2">
-        <span className="text-foreground font-body text-sm font-medium">{skill.name}</span>
+        <div className="flex items-center gap-2">
+          <div className="p-1.5 bg-primary/10 rounded-md group-hover:bg-primary/20 transition-colors">
+            <Icon size={14} className="text-primary" />
+          </div>
+          <span className="text-foreground font-body text-sm font-medium">{skill.name}</span>
+        </div>
         <span className="text-primary font-body text-sm">{skill.level}%</span>
       </div>
       <div className="h-2 bg-secondary rounded-full overflow-hidden">
@@ -32,21 +53,21 @@ const SkillBar = ({ skill, delay }: { skill: Skill; delay: number }) => {
 
 const SkillsSection = () => {
   const technicalSkills: Skill[] = [
-    { name: "JavaScript", level: 90 },
-    { name: "React", level: 85 },
-    { name: "Python", level: 80 },
-    { name: "TypeScript", level: 85 },
-    { name: "Node.js", level: 75 },
-    { name: "HTML/CSS", level: 95 },
+    { name: "JavaScript", level: 90, icon: FileCode2 },
+    { name: "React", level: 85, icon: Blocks },
+    { name: "Python", level: 80, icon: Terminal },
+    { name: "TypeScript", level: 85, icon: Code2 },
+    { name: "Node.js", level: 75, icon: Cpu },
+    { name: "HTML/CSS", level: 95, icon: Globe },
   ];
 
   const otherSkills: Skill[] = [
-    { name: "UI/UX Design", level: 80 },
-    { name: "Git & GitHub", level: 85 },
-    { name: "Database Management", level: 70 },
-    { name: "API Development", level: 75 },
-    { name: "Problem Solving", level: 90 },
-    { name: "Communication", level: 85 },
+    { name: "UI/UX Design", level: 80, icon: Palette },
+    { name: "Git & GitHub", level: 85, icon: GitBranch },
+    { name: "Database", level: 70, icon: Database },
+    { name: "API Development", level: 75, icon: Layers },
+    { name: "Problem Solving", level: 90, icon: Lightbulb },
+    { name: "Communication", level: 85, icon: MessageSquare },
   ];
 
   return (
