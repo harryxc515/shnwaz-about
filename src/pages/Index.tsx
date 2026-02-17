@@ -12,7 +12,8 @@ import BackToTop from "@/components/BackToTop";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-transparent relative">
+      <div className="uiverse-bg-container" />
       <CustomCursor />
       <Navbar />
       <main>

@@ -5,10 +5,8 @@ const HeroSection = () => {
 
   return (
     <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 pb-12">
-      {/* Background grid pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-background/80 to-primary/10" />
-      
+      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-background/20 to-primary/5" />
+
       {/* Animated parallax circles */}
       <ParallaxWrapper speed={0.2} direction="up" className="absolute top-1/4 right-1/4">
         <div className="w-72 h-72 md:w-96 md:h-96 bg-primary/5 rounded-full blur-3xl animate-float" />
