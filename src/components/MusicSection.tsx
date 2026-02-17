@@ -387,7 +387,7 @@ const MusicSection = () => {
   };
 
   return (
-    <section id="music" className="py-24 px-4 bg-background">
+    <section id="music" className="py-24 px-4 bg-transparent relative z-10">
       <div className="container mx-auto max-w-5xl">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-display text-foreground mb-4">Music</h2>

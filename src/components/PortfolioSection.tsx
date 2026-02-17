@@ -11,6 +11,7 @@ const PortfolioSection = () => {
   
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [lightbox, setLightbox] = useState<{ imageUrl: string; title: string } | null>(null);
+  const [activeCategory, setActiveCategory] = useState("All");
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -30,7 +31,11 @@ const PortfolioSection = () => {
     fetchProjects();
   }, []);
 
-  const filteredProjects = projects;
+  const categories = ["All", ...new Set(projects.map((p) => p.category).filter(Boolean) as string[])];
+
+  const filteredProjects = activeCategory === "All"
+    ? projects
+    : projects.filter((p) => p.category === activeCategory);
 
   const handleImageClick = (imageUrl: string, title: string) => {
     setLightbox({ imageUrl, title });
@@ -63,6 +68,25 @@ const PortfolioSection = () => {
             </div>
           </ScrollAnimationWrapper>
 
+          {categories.length > 1 && (
+            <ScrollAnimationWrapper animation="fade-up" delay={0.1}>
+              <div className="flex flex-wrap justify-center gap-2 mb-10">
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setActiveCategory(category)}
+                    className={`px-4 py-2 rounded-full text-xs md:text-sm transition-all duration-300 ${
+                      activeCategory === category
+                        ? "bg-primary text-primary-foreground glow-primary"
+                        : "bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground"
+                    }`}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            </ScrollAnimationWrapper>
+          )}
 
           {filteredProjects.length === 0 ? (
             <ScrollAnimationWrapper delay={0.2}>

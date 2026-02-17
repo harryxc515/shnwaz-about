@@ -40,7 +40,7 @@ Deno.serve(async (req) => {
     console.log("Uploading to storage:", fileName);
     const { error: uploadError } = await supabase.storage
       .from("project-screenshots")
-      .upload(fileName, imageBuffer, {
+      .upload(fileName, new Uint8Array(imageBuffer), {
         contentType,
         upsert: true,
       });
