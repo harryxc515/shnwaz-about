@@ -1,5 +1,13 @@
 name: Deploy to GitHub Pages
 
+# Custom domain DNS is not managed by GitHub Actions.
+# Add these A records in your registrar for shnwaz.in:
+#   A @ 185.199.108.153
+#   A @ 185.199.109.153
+#   A @ 185.199.110.153
+#   A @ 185.199.111.153
+# The repo already includes public/CNAME and the GitHub Pages workflow.
+
 on:
   push:
     branches: [main]
@@ -14,6 +22,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: DNS reminder
+        run: |
+          echo "Custom domain DNS for shnwaz.in must be set at your registrar:"
+          echo "  A @ 185.199.108.153"
+          echo "  A @ 185.199.109.153"
+          echo "  A @ 185.199.110.153"
+          echo "  A @ 185.199.111.153"
+          echo "Also ensure public/CNAME exists with shnwaz.in"
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
