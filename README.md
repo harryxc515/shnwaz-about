@@ -80,6 +80,18 @@ npm install
 npm run dev
 ```
 
+### Hosting note
+
+This project is configured for GitHub Pages deployment with a custom domain.
+To make `https://shnwaz.in` work, you must add these DNS records at your registrar:
+
+- `A @ 185.199.108.153`
+- `A @ 185.199.109.153`
+- `A @ 185.199.110.153`
+- `A @ 185.199.111.153`
+
+The repository already includes `public/CNAME` and `.github/workflows/deploy-pages.yml`.
+
 ### Stats
 
 <p align="center">
